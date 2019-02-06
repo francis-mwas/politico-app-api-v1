@@ -68,6 +68,12 @@ class Party(Resource):
         }
 """get a specific political party by using id """
 class GetSpecificParty(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('name', type=str, required=True, help='Please fill in this field')
+    parser.add_argument('hqAddress', type=str, required=True, help='Please fill in this field')
+    parser.add_argument('logoUrl', type=str, required=True, help='This field cant be empty')
+    
+    """ get a specific party by id """
     def get(self, id):
         party = Parties().get_specifi_party_by_id(id)
         if not party:
@@ -80,6 +86,53 @@ class GetSpecificParty(Resource):
             "party": party.serialize(),
             "status": 200
             }, 200
+
+
+
+    """ update specif party details """
+    def put(self, id):
+        update_party =GetSpecificParty.parser.parse_args()
+        name = update_party['name']
+        hqAddress = update_party['hqAddress']
+        logoUrl = update_party['logoUrl']
+
+
+
+        """ check if party name is valid """
+        if name.isdigit():
+             return{
+                 "status":400,
+                 "Message": "Invalid party name, name must be characters only"
+                 }, 400
+
+        if hqAddress.isdigit():
+             return {
+                 "status":400,
+                 "Message": "Invalid party hqAddress, it must be characters only"
+                 }, 400
+
+        """ check to see if the logo url is a string only"""
+        if logoUrl.isdigit():
+            return{
+                "status":400,
+                "Message": "Invalid logo url, it must be characters only"
+                }, 400
+
+        party = Parties().get_specifi_party_by_id(id)
+        if not party:
+            return {
+                "status": 404,
+                "Message": "This party does not exist"
+            }
+        else:
+            party.name = name
+            party.hqAddress = hqAddress
+            party.logoUrl = logoUrl
+            return {
+                "status": 200,
+                "Party": party.serialize()
+            }
+
 
 """ create office """
 class CreateOffice(Resource):
