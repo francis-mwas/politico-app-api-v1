@@ -2,6 +2,7 @@
 from datetime import datetime
 
 parties = []
+offices = []
 users = []
 
 """ create class party that will hold party related data """
@@ -35,7 +36,35 @@ class Parties:
                 return party
     
     """ get a specific party by id """
-    def get_specifi_party_by_id(self):
+    def get_specifi_party_by_id(self, id):
         for party in parties:
             if party.id == id:
                 return party
+""" create new political office class"""
+class CreatePoliticalOffice:
+    office_id= 1
+    def __init__(self, name=None, Type=None):
+        self.name = name
+        self.Type= Type
+        self.date_created = str(datetime.now().replace(microsecond=0, second=0))
+        self.office_id = CreatePoliticalOffice.office_id
+        CreatePoliticalOffice.office_id +=1
+
+    """serialize data so that it becomes json friendly """
+    def serializer(self):
+        return dict(
+            office_id = self.office_id,
+            name = self.name,
+            Type = self.Type,
+            date_created = self.date_created
+        )
+    """ fetch an office by name """
+    def get_office_by_name(self, name):
+        for office in offices:
+            if office.name == name:
+                return office
+    """ fetch office by id """
+    def get_office_by_id(self, office_id):
+        for office in offices:
+            if office.office_id == office_id:
+                return office
