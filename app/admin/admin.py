@@ -60,14 +60,12 @@ class Party(Resource):
              "Message": "Party not created"}, 400
              
 
-     
-
+    """fetch all political parties """
     def get(self):
-        return {
+        return{
             "status":200,
             "parties":[party.serialize() for party in parties]
-            }
-        
+        }
 """get a specific political party by using id """
 class GetSpecificParty(Resource):
     def get(self, id):
