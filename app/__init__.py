@@ -6,8 +6,8 @@ from instance.config import app_config
 """ Importing Blueprints """
 from .admin import admin_blueprint as admn_blp
 
-""" Module imports """
-from .admin.admin import Party, GetSpecificParty
+""" local module imports """
+from .admin.admin import Party, GetSpecificParty, CreateOffice
 
 
 
@@ -29,6 +29,7 @@ def create_app(config_name):
     """ creating admin enpoints"""
     admin.add_resource(Party,'/parties')
     admin.add_resource(GetSpecificParty, '/parties/<int:id>')
+    admin.add_resource(CreateOffice, '/office')
     
 
 
