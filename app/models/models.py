@@ -35,7 +35,7 @@ class Parties:
                 return party
     
     """ get a specific party by id """
-    def get_party_by_id(self, id):
+    def get_specifi_party_by_id(self):
         for party in parties:
             if party.id == id:
                 return party
