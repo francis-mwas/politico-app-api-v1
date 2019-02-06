@@ -124,6 +124,24 @@ class CreateOffice(Resource):
                      "status":201,
                      "Message": "New office created successfully"
                 }, 201
+
+
+
+    """ fetch all offices """
+    def get(self):
+        return {
+            
+            "status": 200,
+            "Offices": [office.serializer() for office in offices]
+        }
+        
+        
+                
+
+
+
+
+
 """ get a specific political office by id """
 class GetSpecificOffice(Resource):
     def get(self, office_id):
