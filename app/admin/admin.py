@@ -72,9 +72,9 @@ class GetSpecificParty(Resource):
         party = Parties().get_specifi_party_by_id(id)
         if not party:
             return {
-                "status": 400,
+                "status": 404,
                 "Message": "That party does not exist"
-                }, 400
+                }, 404
 
         return {
             "party": party.serialize(),
@@ -124,5 +124,18 @@ class CreateOffice(Resource):
                      "status":201,
                      "Message": "New office created successfully"
                 }, 201
+""" get a specific political office by id """
+class GetSpecificOffice(Resource):
+    def get(self, office_id):
+        office = CreatePoliticalOffice().get_office_by_id(office_id)
+        if not office:
+            return {
+                "status": 404,
+                "Message": "That office does not exist"
+            }
+        return {
+            "status": 200,
+            "Office": office.serializer()
+        }, 200
 
 
