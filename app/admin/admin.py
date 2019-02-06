@@ -108,6 +108,15 @@ class CreateOffice(Resource):
                  "status":400,
                  "Message": "Invalid office type, type must be characters only"
                 }, 400
+
+        """ check if oofice already exists before creation """
+        if CreatePoliticalOffice().get_office_by_name(name):
+            return {
+                "status": 400,
+                "Message": "This office already exists"
+                }, 400
+
+
         office = CreatePoliticalOffice(name, Type)
         offices.append(office)
         if office:
