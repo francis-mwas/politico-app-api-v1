@@ -36,10 +36,12 @@ class Parties:
                 return party
     
     """ get a specific party by id """
-    def get_specifi_party_by_id(self, id):
+    def get_specific_party_by_id(self, id):
         for party in parties:
             if party.id == id:
                 return party
+
+
 """ create new political office class"""
 class CreatePoliticalOffice:
     office_id= 1

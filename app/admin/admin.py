@@ -75,7 +75,7 @@ class GetSpecificParty(Resource):
     
     """ get a specific party by id """
     def get(self, id):
-        party = Parties().get_specifi_party_by_id(id)
+        party = Parties().get_specific_party_by_id(id)
         if not party:
             return {
                 "status": 404,
@@ -87,7 +87,22 @@ class GetSpecificParty(Resource):
             "status": 200
             }, 200
 
+    """ delete a specific party """
+    def delete(self,id):
 
+         party = Parties().get_specific_party_by_id(id)
+
+         if not party:
+            return {
+                "status": 404,
+                "message": "this party does not exist"
+            }
+         else:
+            parties.remove(party)
+            return {
+                "status": 200,
+                "Message": "party deleted successfully"
+            }
 
     """ update specif party details """
     def patch(self, id):
@@ -118,7 +133,7 @@ class GetSpecificParty(Resource):
                 "Message": "Invalid logo url, it must be characters only"
                 }, 400
 
-        party = Parties().get_specifi_party_by_id(id)
+        party = Parties().get_specific_party_by_id(id)
         if not party:
             return {
                 "status": 404,
@@ -133,6 +148,9 @@ class GetSpecificParty(Resource):
                 "status": 200,
                 "Party": party.serialize()
             }
+     
+
+
 
 
 """ create office """
