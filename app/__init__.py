@@ -29,7 +29,7 @@ def create_app(config_name):
     """ creating admin enpoints"""
     admin.add_resource(Party,'/parties')
     admin.add_resource(GetSpecificParty, '/parties/<int:id>')
-    admin.add_resource(CreateOffice, '/office')
+    admin.add_resource(CreateOffice, '/offices')
     
 
 
