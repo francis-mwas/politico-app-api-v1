@@ -7,7 +7,7 @@ from instance.config import app_config
 from .admin import admin_blueprint as admn_blp
 
 """ local module imports """
-from .admin.admin import Party, GetSpecificParty, CreateOffice
+from .admin.admin import Party, GetSpecificParty, CreateOffice, GetSpecificOffice
 
 
 
@@ -30,6 +30,7 @@ def create_app(config_name):
     admin.add_resource(Party,'/parties')
     admin.add_resource(GetSpecificParty, '/parties/<int:id>')
     admin.add_resource(CreateOffice, '/offices')
+    admin.add_resource(GetSpecificOffice, '/offices/<int:office_id>')
     
 
 
