@@ -39,3 +39,6 @@ class Parties:
         for party in parties:
             if party.id == id:
                 return party
+""" create new political office class"""
+class CreatePoliticalOffice:
+    pass
