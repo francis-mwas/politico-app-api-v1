@@ -90,7 +90,7 @@ class GetSpecificParty(Resource):
 
 
     """ update specif party details """
-    def put(self, id):
+    def patch(self, id):
         update_party =GetSpecificParty.parser.parse_args()
         name = update_party['name']
         hqAddress = update_party['hqAddress']
@@ -129,6 +129,7 @@ class GetSpecificParty(Resource):
             party.hqAddress = hqAddress
             party.logoUrl = logoUrl
             return {
+                "message": "Party details updated successfully",
                 "status": 200,
                 "Party": party.serialize()
             }
