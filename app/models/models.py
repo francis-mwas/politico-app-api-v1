@@ -102,7 +102,9 @@ class User:
 
     """ get user by email """
     def get_user_by_email(self, email):
-        pass
+        for user in users:
+            if user.email == email:
+                return email
 
 
 
