@@ -5,9 +5,11 @@ from instance.config import app_config
 
 """ Importing Blueprints """
 from .admin import admin_blueprint as admn_blp
+from .auth import admin_blueprint as auth_blp
 
 """ local module imports """
 from .admin.admin import Party, GetSpecificParty, CreateOffice, GetSpecificOffice
+from .auth.auth import UserSignUp
 
 
 
@@ -19,9 +21,13 @@ def create_app(config_name):
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
 
-    """ Registering application blueprint for admin views"""
+    """ Registering application blueprint for views"""
     admin = Api(admn_blp)
     app.register_blueprint(admn_blp, url_prefix='/api/v1')
+    auth = Api(auth_blp)
+    app.register_blueprint(auth_blp, url_prefix='/api/v1')
+
+
    
 
     
@@ -31,6 +37,8 @@ def create_app(config_name):
     admin.add_resource(GetSpecificParty, '/parties/<int:id>')
     admin.add_resource(CreateOffice, '/offices')
     admin.add_resource(GetSpecificOffice, '/offices/<int:office_id>')
+
+    auth.add_resource(UserSignUp, '/users')
     
 
 
