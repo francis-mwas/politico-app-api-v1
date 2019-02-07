@@ -1,6 +1,8 @@
 """ Global Imports """
 from flask import Flask, Blueprint
 from flask_restful import Api
+from flask_jwt_extended import JWTManager
+
 from instance.config import app_config
 
 """ Importing Blueprints """
@@ -9,9 +11,9 @@ from .auth import admin_blueprint as auth_blp
 
 """ local module imports """
 from .admin.admin import Party, GetSpecificParty, CreateOffice, GetSpecificOffice
-from .auth.auth import UserSignUp
+from .auth.auth import UserSignUp, UserLogin
 
-
+jwt = JWTManager()
 
 
 """ creating an application instance """
@@ -20,6 +22,9 @@ def create_app(config_name):
    
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
+
+ 
+    jwt.init_app(app)
 
     """ Registering application blueprint for views"""
     admin = Api(admn_blp)
@@ -38,7 +43,8 @@ def create_app(config_name):
     admin.add_resource(CreateOffice, '/offices')
     admin.add_resource(GetSpecificOffice, '/offices/<int:office_id>')
 
-    auth.add_resource(UserSignUp, '/users')
+    auth.add_resource(UserSignUp, '/signup')
+    auth.add_resource(UserLogin, '/signin')
     
 
 

@@ -1,4 +1,7 @@
 from flask_restful import Resource, reqparse
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token
+import datetime
 """local imports"""
 from ..models.models import User, users
 from validations import validations
@@ -57,7 +60,7 @@ class UserSignUp(Resource):
         if not validate_user_data.validate_phone_number(phoneNumber):
             return {"status": 400, "Message": "Phone number " 
             "should be atleast 10 characters"}, 400
-        if isAdmin not in range(0, 2):
+        if not validate_user_data.validate_is_admin:
             return {"message": "Is admin field should have a range of"
             "between 0 and 1"}, 400
 
@@ -85,3 +88,38 @@ class UserSignUp(Resource):
     """ get all users """
     def get(self):
         return {"status": 200, "users":[user.serialize() for user in users ]}, 200
+
+class UserLogin(Resource):
+    """ user login """
+    parser =reqparse.RequestParser()
+
+    parser.add_argument('email', type=str, required=True, 
+        help="The email field ir required to login")
+    parser.add_argument('password', type=str, required=True,
+        help="Password field cannot be empty")
+    
+
+    def post(self):
+        login_data = UserLogin.parser.parse_args()
+
+        email = login_data['email']
+        password = login_data['password']
+
+        validate_user_login = validations.Validations()
+
+        if not validate_user_login.validate_email(email):
+            return {"status": 400, "Message": "Please enter a valid email address"}, 400
+        if not validate_user_login.validate_password(password):
+            return {"status": 400, "Message": "Password should start with alphanumeric"
+            "character and have length between 3 to 10 characters"}, 400
+        
+        """ check is user already registered"""
+        user_exist = User().get_user_by_email(email)
+        # import pdb; pdb.set_trace()
+        # print(user_exist.pwhash)
+        if user_exist:
+            return {"Message": "Welcome, you have successfully logged in", 
+            "status":200},
+        return {"status": 404, "message": "The user is not found on this server"},404
+
+        

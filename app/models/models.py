@@ -1,6 +1,6 @@
 """import datetime to help you get the current date and time"""
 from datetime import datetime
-
+from werkzeug.security import generate_password_hash, check_password_hash
 parties = []
 offices = []
 users = []
@@ -91,10 +91,14 @@ class User:
         self.phoneNumber = phoneNumber
         self.passportUrl = passportUrl
         self.isAdmin = isAdmin
-        self.password = password
+        if password:
+            self.pwhash =generate_password_hash(password)
         self.createdDate = str(datetime.now().replace(second=0, microsecond=0))
         self.user_id = User.user_id
         User.user_id += 1
+
+
+        
 
     def serialize(self):
         """ convert user data into a dictionary """
@@ -106,13 +110,13 @@ class User:
             phoneNumber=self.phoneNumber,
             passportUrl=self.passportUrl,
             isAdmin=self.isAdmin,
-            password=self.password,
+            password=self.pwhash,
             createdDate=self.createdDate,
             user_id=self.user_id,
 
         )
 
-    def get_user_by_email(self, email):
+    def get_user_by_email(self,email):
         """ get user by email """
         for user in users:
             if user.email == email:
