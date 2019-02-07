@@ -1,5 +1,5 @@
 """ Global Imports """
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
@@ -32,11 +32,6 @@ def create_app(config_name):
     auth = Api(auth_blp)
     app.register_blueprint(auth_blp, url_prefix='/api/v1')
 
-
-   
-
-    
-
     """ creating admin enpoints"""
     admin.add_resource(Party,'/parties')
     admin.add_resource(GetSpecificParty, '/parties/<int:id>')
@@ -46,7 +41,11 @@ def create_app(config_name):
     auth.add_resource(UserSignUp, '/signup')
     auth.add_resource(UserLogin, '/signin')
     
+    @app.errorhandler(404)
+    def resource_not_found(e):
+        return jsonify({
+            "status": "error",
+            "message": "Resource not found"
+        }), 404
 
-
-    
     return app

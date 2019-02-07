@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from flask_jwt_extended import create_access_token
 import datetime
 """local imports"""
@@ -118,7 +118,12 @@ class UserLogin(Resource):
         # import pdb; pdb.set_trace()
         # print(user_exist.pwhash)
         if user_exist:
-            return {"Message": "Welcome, you have successfully logged in", 
+            if not check_password_hash(user_exist.pwhash, password):
+                return {"Message":"Wrong password"}
+            token = create_access_token(user_exist.email)
+            return {
+            "token":token,
+            "Message": "Welcome you have successfully logged in", 
             "status":200},
         return {"status": 404, "message": "The user is not found on this server"},404
 

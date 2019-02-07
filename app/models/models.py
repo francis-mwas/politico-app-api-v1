@@ -1,6 +1,6 @@
 """import datetime to help you get the current date and time"""
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 parties = []
 offices = []
 users = []
@@ -120,4 +120,4 @@ class User:
         """ get user by email """
         for user in users:
             if user.email == email:
-                return email
+                return user
