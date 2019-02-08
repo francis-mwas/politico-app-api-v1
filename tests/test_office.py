@@ -99,6 +99,8 @@ class PoliticalOffice(unittest.TestCase):
             headers = {"content-type": "application/json"}
         )
         self.assertEqual(response.status_code, 404)
+        
+
 
     def test_edit_office(self):
         """ test editing a specific office """
