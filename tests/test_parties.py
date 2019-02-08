@@ -27,7 +27,7 @@ class PoliticalParties(unittest.TestCase):
             "logoUrl": "http://images.com/img1.png",
         }
         response = self.client.post(
-            "api/v1/parties",
+            "api/v1/admin/parties",
             data=json.dumps(party_data),
             headers = {'Content-type': 'application/json'}
 
@@ -53,7 +53,7 @@ class PoliticalParties(unittest.TestCase):
             "logoUrl":"localhost/images/img1.png"
         }
         res=self.client.post(
-            "api/v1/parties",
+            "api/v1/admin/parties",
             data=json.dumps(create_invalid_party_name),
             headers={"content-type":"application/json"}
         )
@@ -71,7 +71,7 @@ class PoliticalParties(unittest.TestCase):
             "logoUrl":"img1.png"
         }
         res=self.client.post(
-            "api/v1/parties",
+            "api/v1/admin/parties",
             data=json.dumps(create_invalid_party_hqaddres),
             headers={"content-type":"application/json"}
         )
@@ -88,7 +88,7 @@ class PoliticalParties(unittest.TestCase):
             "logoUrl":"111111"
         }
         res = self.client.post(
-            "api/v1/parties",
+            "api/v1/admin/parties",
             data=json.dumps(invalid_logo_url),
             headers={"content-type":"application/json"}
         )
@@ -100,7 +100,7 @@ class PoliticalParties(unittest.TestCase):
         """testing fetching a single party by id """
         self.create_party()
         response_data = self.client.get(
-            "api/v1/parties/2",
+            "api/v1/admin/parties/2",
             headers ={"content-type": "application/json"}
         )
         print(response_data)
@@ -110,7 +110,7 @@ class PoliticalParties(unittest.TestCase):
     def test_fetch_all_parties(self):
         """ test fetching all political parties """
         response_data = self.client.get(
-            "api/v1/parties",
+            "api/v1/admin/parties",
              headers={"content-type":"application/json"}
         )
         self.assertEqual(response_data.status_code, 200)
@@ -119,7 +119,7 @@ class PoliticalParties(unittest.TestCase):
         """ testing party does not exist """
         
         response = self.client.get(
-            "api/v1/parties/200",
+            "api/v1/admin/parties/200",
             headers = {"content-type": "application/json"}
         )
         self.assertEqual(response.status_code, 404)
@@ -134,7 +134,7 @@ class PoliticalParties(unittest.TestCase):
         }
         print(res.data)
         response=self.client.patch(
-            "api/v1/parties/2",
+            "api/v1/admin/parties/2",
             data=json.dumps(update_data),
             headers={"content-type":"application/json"}
         )

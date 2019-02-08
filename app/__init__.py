@@ -28,9 +28,9 @@ def create_app(config_name):
 
     """ Registering application blueprint for views"""
     admin = Api(admn_blp)
-    app.register_blueprint(admn_blp, url_prefix='/api/v1')
+    app.register_blueprint(admn_blp, url_prefix='/api/v1/admin')
     auth = Api(auth_blp)
-    app.register_blueprint(auth_blp, url_prefix='/api/v1')
+    app.register_blueprint(auth_blp, url_prefix='/api/v1/auth')
 
     """ creating admin enpoints"""
     admin.add_resource(Party,'/parties')
