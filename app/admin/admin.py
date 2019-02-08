@@ -210,7 +210,7 @@ class GetSpecificOffice(Resource):
         office = CreatePoliticalOffice().get_office_by_id(office_id)
 
         if not office:
-            return {"status": 404,"message": "this party does not exist"},404
+            return {"status": 404,"message": "this office does not exist"},404
         else:
             offices.remove(office)
             return {"status": 200,"Message": "office deleted successfully"}
