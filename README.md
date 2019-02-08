@@ -2,6 +2,7 @@
 Politico is an application that enables citizens give their mandate to politicians running for different government offices, while building trust in the process through transparency.
 
 # POLITICO-API-V1
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b2b7cec3ca9b441e8d5d81f3d155f693)](https://app.codacy.com/app/francis-mwas/politico-app-api-v1?utm_source=github.com&utm_medium=referral&utm_content=francis-mwas/politico-app-api-v1&utm_campaign=Badge_Grade_Dashboard)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
