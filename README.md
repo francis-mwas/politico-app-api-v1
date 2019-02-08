@@ -1,10 +1,11 @@
 # POLITICO-APP
 Politico is an application that enables citizens give their mandate to politicians running for different government offices, while building trust in the process through transparency.
 
-# POLITICO-API-V1
+[![Build Status](https://travis-ci.com/francis-mwas/politico-app-api-v1.svg?branch=develop)](https://travis-ci.com/francis-mwas/politico-app-api-v1)
+[![Coverage Status](https://coveralls.io/repos/github/francis-mwas/politico-app-api-v1/badge.svg?branch=develop)](https://coveralls.io/github/francis-mwas/politico-app-api-v1?branch=develop)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/784dc521fe654185a9c783847599e41a)](https://www.codacy.com/app/francis-mwas/politico-app-api-v1?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=francis-mwas/politico-app-api-v1&amp;utm_campaign=Badge_Grade)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
-[![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
 
 #Politico app challenge
 Politico is an application that enables citizens give their mandate to politicians running for different government offices, while building trust in the process through transparency.
@@ -27,9 +28,9 @@ Politico is an application that enables citizens give their mandate to politicia
 # Installation and setup
 
 Clone this repository 
-'''
-https://github.com/francis-mwas/POLITICO-API-V1
-
+```
+https://github.com/francis-mwas/politico-app-api-v1
+```
 
 ### Create and activate virtual environment
 
@@ -51,3 +52,32 @@ https://github.com/francis-mwas/POLITICO-API-V1
 
     ```
 
+    ## Politico App Available Endpoints 
+
+| Method | Endpoint                        | Description                           | Roles           |
+| ------ | ------------------------------- | ------------------------------------- | ----------------|
+| POST   | /api/v1/admin/parties           | create party                          | Admin           |  
+| GET    |/api/v1/admin/parties            | view all parties                      | Admin           |
+| DELETE |/api/V1/admin/parties/<{id}>     | delete a specific party               | Admin           |
+| PATCH  |/api/V1/admin/parties/<{id}>     | edit specific party                   | Admin           |
+| GET    | /api/V1/admin/parties/<{id}>    | get a specific party                  | Admin           |
+| POST   |/api/V1/admin/offices            | create office                         | Admin           |
+| GET    | /api/V1/admin/ofice/<{id}>      | get a specific office                 | Admin           |
+| GET    | /api/V1/admin/offices           | fetch all offices                     |Admin            |
+| PATCH  | /api/V1/admin/offices/<{id}>    | update a specific office              | Admin           |
+| POST   | /api/V1/auth/signup             | create an account                     |Admin/Users      |       |POST    |/api/V1/auth/signin              | signin                                | Admin/Users     |
+|DELETE  |/api/V1/admin/offices/<{id}>     | delete a specific office              | Admin           |
+
+
+
+### Testing
+
+    Pytest
+
+    - Testing with coverage
+
+    - pytest --cov=app
+
+### Author
+
+Francis Mwangi
