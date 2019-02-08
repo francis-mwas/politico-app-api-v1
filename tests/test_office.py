@@ -26,7 +26,7 @@ class PoliticalOffice(unittest.TestCase):
             "Type": "federal"
         }
         response = self.client.post(
-            "api/v1/offices",
+            "api/v1/admin/offices",
             data=json.dumps(create_office_data),
             headers = {'Content-type': 'application/json'}
         )
@@ -48,7 +48,7 @@ class PoliticalOffice(unittest.TestCase):
             "Type": "federal"
         }
         response = self.client.post(
-            "api/v1/offices",
+            "api/v1/admin/offices",
             data=json.dumps(office_data),
             headers={"content-type": "application/json"}
         )
@@ -63,7 +63,7 @@ class PoliticalOffice(unittest.TestCase):
             "Type": "2222091"
         }
         response = self.client.post(
-            "api/v1/offices",
+            "api/v1/admin/offices",
             data=json.dumps(create_office),
             headers={'content-type': 'application/json'}
         )
@@ -75,7 +75,7 @@ class PoliticalOffice(unittest.TestCase):
         """testing fetching a single office by id """
         self.create_office()
         response_data = self.client.get(
-            "api/v1/offices/2",
+            "api/v1/admin/offices/2",
             headers ={"content-type": "application/json"}
         )
         # print(response_data)
@@ -86,7 +86,7 @@ class PoliticalOffice(unittest.TestCase):
     def test_fetch_all_offices(self):
         """ test fetching all political offices """
         response_data = self.client.get(
-            "api/v1/offices",
+            "api/v1/admin/offices",
              headers={"content-type":"application/json"}
         )
         self.assertEqual(response_data.status_code, 200)
@@ -95,7 +95,7 @@ class PoliticalOffice(unittest.TestCase):
         """ testing office does not exist """
         
         response = self.client.get(
-            "api/v1/office/200",
+            "api/v1/admin/office/200",
             headers = {"content-type": "application/json"}
         )
         self.assertEqual(response.status_code, 404)
@@ -111,7 +111,7 @@ class PoliticalOffice(unittest.TestCase):
         }
       
         response=self.client.patch(
-            "api/v1/offices/2",
+            "api/v1/admin/offices/2",
             data=json.dumps(update_data),
             headers={"content-type":"application/json"}
         )

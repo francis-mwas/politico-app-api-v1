@@ -31,7 +31,7 @@ class PoliticalOffice(unittest.TestCase):
                 "password":"mwas12345"
         }
         response = self.client.post(
-            "api/v1/signup",
+            "api/v1/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -44,7 +44,7 @@ class PoliticalOffice(unittest.TestCase):
             "password":"mwas12345"
         }
         response = self.client.post(
-            "api/v1/signin",
+            "api/v1/auth/signin",
             data=json.dumps(login_data),
             headers={"content-type": "application/json"}
         )
@@ -74,7 +74,7 @@ class PoliticalOffice(unittest.TestCase):
         
         self.create_account()
         response = self.client.post(
-            "api/v1/signup",
+            "api/v1/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -93,23 +93,13 @@ class PoliticalOffice(unittest.TestCase):
         self.create_account()
 
         response = self.client.post(
-            "api/v1/signin",
+            "api/v1/auth/signin",
             data=json.dumps(login_data),
             headers={"content-type": "application/json"}
         )
         self.assertEqual(response.status_code, 404)
         self.assertEqual(json.loads(response.data)[
                          "message"], "The user is not found on this server")
-
-
-
-
-
-
-
-
-
-
 
 
     def test_invalid_email(self):
@@ -125,7 +115,7 @@ class PoliticalOffice(unittest.TestCase):
                 "password":"mwas12345"
         }
         response = self.client.post(
-            "api/v1/signup",
+            "api/v1/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -148,7 +138,7 @@ class PoliticalOffice(unittest.TestCase):
                 "password":"mwas12345"
         }
         response = self.client.post(
-            "api/v1/signup",
+            "api/v1/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -171,7 +161,7 @@ class PoliticalOffice(unittest.TestCase):
                 "password":"mwas12345"
         }
         response = self.client.post(
-            "api/v1/signup",
+            "api/v1/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -194,7 +184,7 @@ class PoliticalOffice(unittest.TestCase):
                 "password":"mwas12345"
         }
         response = self.client.post(
-            "api/v1/signup",
+            "api/v1/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -216,7 +206,7 @@ class PoliticalOffice(unittest.TestCase):
                 "password":"mwas12345"
         }
         response = self.client.post(
-            "api/v1/signup",
+            "api/v1/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -238,7 +228,7 @@ class PoliticalOffice(unittest.TestCase):
                 "password":"mwas12345"
         }
         response = self.client.post(
-            "api/v1/signup",
+            "api/v1/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -261,7 +251,7 @@ class PoliticalOffice(unittest.TestCase):
                 "password":"q5"
         }
         response = self.client.post(
-            "api/v1/signup",
+            "api/v1/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
