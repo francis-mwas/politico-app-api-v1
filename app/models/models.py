@@ -92,7 +92,7 @@ class User:
         self.passportUrl = passportUrl
         self.isAdmin = isAdmin
         if password:
-            self.pwhash =generate_password_hash(password)
+            self.hashed_password =generate_password_hash(password)
         self.createdDate = str(datetime.now().replace(second=0, microsecond=0))
         self.user_id = User.user_id
         User.user_id += 1
@@ -110,7 +110,7 @@ class User:
             phoneNumber=self.phoneNumber,
             passportUrl=self.passportUrl,
             isAdmin=self.isAdmin,
-            password=self.pwhash,
+            password=self.hashed_password,
             createdDate=self.createdDate,
             user_id=self.user_id,
 

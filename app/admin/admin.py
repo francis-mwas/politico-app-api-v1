@@ -1,6 +1,7 @@
 """ Global iports """
 from flask import Flask
 from flask_restful import Resource, reqparse
+from flask_jwt_extended import jwt_required
 """ local imports """
 from ..models.models import parties,Parties, CreatePoliticalOffice, offices
 
@@ -18,7 +19,7 @@ class Party(Resource):
     parser.add_argument('logoUrl', type=str, required=True,
          help='This field cant be empty')
 
-    
+    @jwt_required
     def post(self):
         """create post party method"""
         party_data = Party.parser.parse_args()
@@ -55,7 +56,7 @@ class Party(Resource):
         return {"status": "400","Message": "Party not created"}, 400
              
 
-  
+    @jwt_required
     def get(self):
         """fetch all political parties """
         return{"status":200,"parties":[party.serialize() for party in parties]}
@@ -71,7 +72,7 @@ class GetSpecificParty(Resource):
     parser.add_argument('logoUrl', type=str, required=True,
      help='This field cant be empty')
     
-    
+    @jwt_required
     def get(self, id):
         """ get a specific party by id """
         party = Parties().get_specific_party_by_id(id)
@@ -83,7 +84,7 @@ class GetSpecificParty(Resource):
 
        
 
-   
+    @jwt_required
     def delete(self,id):
         """ delete a specific party """
 
@@ -95,7 +96,7 @@ class GetSpecificParty(Resource):
             parties.remove(party)
             return {"status": 200,"Message": "party deleted successfully"}
 
-   
+    @jwt_required
     def patch(self, id):
         """ update specif party details """
         update_party =GetSpecificParty.parser.parse_args()
@@ -145,7 +146,7 @@ class CreateOffice(Resource):
     parser.add_argument('Type', type=str, 
         required=True, help='Please fill in this field')
     
-    
+    @jwt_required
     def post(self):
         """ create post office method """
 
@@ -177,6 +178,7 @@ class CreateOffice(Resource):
             "created successfully", "Office": office.serializer()}, 201
 
     """ fetch all offices """
+    @jwt_required
     def get(self):
         return {
             
@@ -194,6 +196,7 @@ class GetSpecificOffice(Resource):
     parser.add_argument('Type', type=str, required=True,
      help='Please fill in this field')
     
+    @jwt_required
     def get(self, office_id):
   
         office = CreatePoliticalOffice().get_office_by_id(office_id)
@@ -203,7 +206,7 @@ class GetSpecificOffice(Resource):
           
         else:
             return {"Status":400, "Message": "This office does not exist"}, 400
-   
+    @jwt_required
     def delete(self,office_id):
         """ delete a specific office """
 
@@ -215,7 +218,7 @@ class GetSpecificOffice(Resource):
             offices.remove(office)
             return {"status": 200,"Message": "office deleted successfully"}
 
-   
+    @jwt_required
     def patch(self, office_id):
         """ update specif office details """
         update_office = GetSpecificOffice.parser.parse_args()
