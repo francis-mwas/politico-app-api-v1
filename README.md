@@ -53,8 +53,8 @@ https://github.com/francis-mwas/politico-app-api-v1
 
 ## Politico App Available Endpoints 
 
-| Method | Endpoint                        | Description                           | Roles          |                                                                                                            |
-| ------ | ------------------------------- | ------------------------------------- | ------|
+| Method | Endpoint                        | Description                           | Roles           |       
+| ------ | ------------------------------- | ------------------------------------- | ----------------|
 | POST   | /api/v1/admin/parties           | create party                          | Admin           |  
 | GET    |/api/v1/admin/parties            | view all parties                      | Admin           |
 | DELETE |/api/V1/admin/parties/<{id}>     | delete a specific party               | Admin           |
