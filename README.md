@@ -27,9 +27,9 @@ Politico is an application that enables citizens give their mandate to politicia
 # Installation and setup
 
 Clone this repository 
-```
+
 https://github.com/francis-mwas/politico-app-api-v1
-```
+
 
 ### Create and activate virtual environment
 
@@ -42,19 +42,19 @@ https://github.com/francis-mwas/politico-app-api-v1
     pip install -r requirements.txt
 
 ### Running Politico application
-    ```
+    
     $ export FLASK_APP = run.py
 
     $ export MODE = development
 
     $ flask run
 
-    ```
+    
 
 ## Politico App Available Endpoints 
 
-| Method | Endpoint                        | Description                           | Roles           |
-| ------ | ------------------------------- | ------------------------------------- | ----------------|
+| Method | Endpoint                        | Description                           | Roles          |                                                                                                            |
+| ------ | ------------------------------- | ------------------------------------- | ------|
 | POST   | /api/v1/admin/parties           | create party                          | Admin           |  
 | GET    |/api/v1/admin/parties            | view all parties                      | Admin           |
 | DELETE |/api/V1/admin/parties/<{id}>     | delete a specific party               | Admin           |
@@ -62,9 +62,9 @@ https://github.com/francis-mwas/politico-app-api-v1
 | GET    | /api/V1/admin/parties/<{id}>    | get a specific party                  | Admin           |
 | POST   |/api/V1/admin/offices            | create office                         | Admin           |
 | GET    | /api/V1/admin/ofice/<{id}>      | get a specific office                 | Admin           |
-| GET    | /api/V1/admin/offices           | fetch all offices                     |Admin            |
+| GET    | /api/V1/admin/offices           | fetch all offices                     | Admin           |
 | PATCH  | /api/V1/admin/offices/<{id}>    | update a specific office              | Admin           |
-| POST   | /api/V1/auth/signup             | create an account                     |Admin/Users      |       |POST    | /api/V1/auth/signin             | signin                                |Admin/Users      |
+| POST   | /api/V1/auth/signup             | create an account                     | Admin/   Users  |       | POST   | /api/V1/auth/signin             | signin                                |   Admin/Users   |       |        |                                 |                                       |                 |
 |DELETE  |/api/V1/admin/offices/<{id}>     | delete a specific office              | Admin           |
 
 
