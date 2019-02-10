@@ -52,22 +52,86 @@ https://github.com/francis-mwas/politico-app-api-v1
     
 
 ## Politico App Available Endpoints 
-
-| Method | Endpoint                        | Description                           | Roles           |       
-| ------ | ------------------------------- | ------------------------------------- | ----------------|
-| POST   | /api/v1/admin/parties           | create party                          | Admin           |  
-| GET    |/api/v1/admin/parties            | view all parties                      | Admin           |
-| DELETE |/api/V1/admin/parties/<{id}>     | delete a specific party               | Admin           |
-| PATCH  |/api/V1/admin/parties/<{id}>     | edit specific party                   | Admin           |
-| GET    | /api/V1/admin/parties/<{id}>    | get a specific party                  | Admin           |
-| POST   |/api/V1/admin/offices            | create office                         | Admin           |
-| GET    | /api/V1/admin/ofice/<{id}>      | get a specific office                 | Admin           |
-| GET    | /api/V1/admin/offices           | fetch all offices                     | Admin           |
-| PATCH  | /api/V1/admin/offices/<{id}>    | update a specific office              | Admin           |
-| POST   | /api/V1/auth/signup             | create an account                     | Admin/   Users  |       | POST   | /api/V1/auth/signin             | signin                                |   Admin/Users   |       
-|DELETE  |/api/V1/admin/offices/<{id}>     | delete a specific office              | Admin           |
-
-
+<table>
+    <tr>
+        <td>Method</td>
+        <td>Endpoint</td>
+        <td>Description</td>
+        <td>Roles</td>
+    </tr>
+    <tr>
+        <td>POST</td>
+        <td>/api/v1/admin/parties </td>
+        <td>create party </td>
+        <td>Admin</td>
+    </tr>
+    <tr>
+     <td>GET</td>
+        <td>/api/v1/admin/parties </td>
+        <td>Fetch all parties </td>
+        <td>Admin</td>
+    </tr>
+    <tr>
+     <td>DELETE</td>
+        <td>/api/v1/admin/parties/<{id}> </td>
+        <td>delete a specific party </td>
+        <td>Admin</td>
+    </tr>
+    <tr>
+     <td>PATCH</td>
+        <td>/api/v1/admin/parties/<{id}></td>
+        <td>edit a specific party </td>
+        <td>Admin</td>
+    </tr>
+     <tr>
+     <td>GET</td>
+        <td>/api/v1/admin/parties/<{id}> </td>
+        <td>get a specific party </td>
+        <td>Admin</td>
+    </tr>
+    <tr>
+     <td>POST</td>
+        <td>/api/v1/admin/offices </td>
+        <td>create office </td>
+        <td>Admin</td>
+    </tr>
+    <tr>
+     <td>GET</td>
+        <td>/api/v1/admin/ofice/<{id}>  </td>
+        <td> get a specific office </td>
+        <td>Admin</td>
+    </tr>
+    <tr>
+     <td>GET</td>
+        <td>/api/v1/admin/offices  </td>
+        <td>fetch all offices </td>
+        <td>Admin</td>
+    </tr>
+    <tr>
+     <td>PATCH</td>
+        <td>/api/v1/admin/offices/<{id}> </td>
+        <td> update a specific office </td>
+        <td>Admin</td>
+    </tr>
+    <tr>
+     <td>POST</td>
+        <td>/api/V1/auth/signup </td>
+        <td> create an account </td>
+        <td>Admin /Users</td>
+    </tr>
+     <tr>
+     <td>POST</td>
+        <td>/api/v1/auth/signin  </td>
+        <td>signin</td>
+        <td>Admin /Users</td>
+    </tr>
+    <tr>
+     <td>DELETE</td>
+        <td>/api/v1/admin/offices/<{id}> </td>
+        <td>delete a specific office</td>
+        <td>Admin</td>
+    </tr>
+</table>
 
 ### Testing
 
