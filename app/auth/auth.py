@@ -121,9 +121,9 @@ class UserLogin(Resource):
                 return {"Message":"Wrong password"}
             token = create_access_token(user_exist.email)
             return {
-            "token":token,
+            "access_token":token,
             "Message": "Welcome you have successfully logged in", 
-            "status":200},
+            "status":200},200
         return {"status": 404, "message": "The user is not found on this server"},404
 
         
