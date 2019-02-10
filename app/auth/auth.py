@@ -115,10 +115,9 @@ class UserLogin(Resource):
         
         """ check is user already registered"""
         user_exist = User().get_user_by_email(email)
-        # import pdb; pdb.set_trace()
-        # print(user_exist.pwhash)
+      
         if user_exist:
-            if not check_password_hash(user_exist.pwhash, password):
+            if not check_password_hash(user_exist.hashed_password, password):
                 return {"Message":"Wrong password"}
             token = create_access_token(user_exist.email)
             return {
