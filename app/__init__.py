@@ -19,9 +19,7 @@ jwt = JWTManager()
 """ creating an application instance """
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
-   
-    if not config_name:
-        config_name = "production"
+
         
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
@@ -47,8 +45,9 @@ def create_app(config_name):
     @app.errorhandler(404)
     def resource_not_found(e):
         return jsonify({
-            "status": "error",
-            "message": "Resource not found"
+            "status": "404",
+            "message": "The url you requested does not exist, please enter a valid url"
+            "for example: https://politico-app-api-v1.herokuapp.com/api/v1/admin/parties"
         }), 404
 
     return app
