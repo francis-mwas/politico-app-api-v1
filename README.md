@@ -64,7 +64,7 @@ https://github.com/francis-mwas/politico-app-api-v1
 | GET    | /api/V1/admin/ofice/<{id}>      | get a specific office                 | Admin           |
 | GET    | /api/V1/admin/offices           | fetch all offices                     | Admin           |
 | PATCH  | /api/V1/admin/offices/<{id}>    | update a specific office              | Admin           |
-| POST   | /api/V1/auth/signup             | create an account                     | Admin/   Users  |       | POST   | /api/V1/auth/signin             | signin                                |   Admin/Users   |       |        |                                 |                                       |                 |
+| POST   | /api/V1/auth/signup             | create an account                     | Admin/   Users  |       | POST   | /api/V1/auth/signin             | signin                                |   Admin/Users   |       
 |DELETE  |/api/V1/admin/offices/<{id}>     | delete a specific office              | Admin           |
 
 
