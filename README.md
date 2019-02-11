@@ -1,5 +1,5 @@
 # POLITICO-APP
-
+[![Maintainability](https://api.codeclimate.com/v1/badges/f2f881c783706e56e049/maintainability)](https://codeclimate.com/github/francis-mwas/politico-app-api-v1/maintainability)
 [![Build Status](https://travis-ci.com/francis-mwas/politico-app-api-v1.svg?branch=develop)](https://travis-ci.com/francis-mwas/politico-app-api-v1)
 [![Coverage Status](https://coveralls.io/repos/github/francis-mwas/politico-app-api-v1/badge.svg?branch=develop)](https://coveralls.io/github/francis-mwas/politico-app-api-v1?branch=develop)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/784dc521fe654185a9c783847599e41a)](https://www.codacy.com/app/francis-mwas/politico-app-api-v1?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=francis-mwas/politico-app-api-v1&amp;utm_campaign=Badge_Grade)
