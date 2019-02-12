@@ -45,9 +45,9 @@ https://github.com/francis-mwas/politico-app-api-v1
 
 ### Running Politico application
     
-    $ export FLASK_APP =run.py
+    $ export FLASK_APP=run.py
 
-    $ export MODE =development
+    $ export MODE=development
 
     $ flask run
 
