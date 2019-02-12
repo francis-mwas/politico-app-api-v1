@@ -2,6 +2,7 @@ import os
 
 
 class Config:
+    """ main class configurations."""
     DEBUG = False
     TESTING = True
     CSRF_ENABLED = True
@@ -9,15 +10,18 @@ class Config:
 
 
 class ProductionConfiguration(Config):
+    """production mode configurations."""
     DEBUG = False
     TESTING = False
 
 
 class DevelopmentConfiguration(Config):
+    """ application development configuration."""
     DEBUG = True
 
 
 class TestingConfiguration(Config):
+    """ application testing configuration."""
     TESTING = True
     DEBUG = True
 

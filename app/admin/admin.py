@@ -1,15 +1,15 @@
-""" Global iports """
+""" Global iports."""
 from flask import Flask
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
-""" local imports """
+"""local imports."""
 from ..models.models import parties,Parties, CreatePoliticalOffice, offices
 
 from validations import validations
 
 
 class Party(Resource):
-    """ create class Parties """
+    """ create class Parties."""
     parser = reqparse.RequestParser(bundle_errors=True)
 
     parser.add_argument('name', type=str, required=True,
@@ -21,7 +21,7 @@ class Party(Resource):
 
     @jwt_required
     def post(self):
-        """create post party method"""
+        """create post party method."""
         party_data = Party.parser.parse_args()
 
         name = party_data['name']
@@ -30,7 +30,7 @@ class Party(Resource):
 
         validate_data = validations.Validations()
 
-        """check to see if the input strings are valid"""
+        """check to see if the input strings are valid."""
         if not validate_data.validate_input_fields(name):
             return {"status":400,"Message": "Please enter valid name"}, 400
         if not validate_data.validate_input_fields(hqAddress):
@@ -38,7 +38,7 @@ class Party(Resource):
         if not validate_data.validate_url(logoUrl):
             return {"status":400, "Message": "Please enter a valid logo url"}, 400
          
-        """ check of party exist """
+        """check of party exist."""
 
         if Parties().get_party_by_name(name):
             return {"status": 400, "Message": "This party already exist"}, 400
@@ -58,12 +58,12 @@ class Party(Resource):
 
     @jwt_required
     def get(self):
-        """fetch all political parties """
+        """fetch all political parties."""
         return{"status":200,"parties":[party.serialize() for party in parties]}
 
 
 class GetSpecificParty(Resource):
-    """get a specific political party by using id """
+    """get a specific political party by using id."""
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, required=True, 
     help='Please fill in this field')
@@ -74,7 +74,7 @@ class GetSpecificParty(Resource):
     
     @jwt_required
     def get(self, id):
-        """ get a specific party by id """
+        """ get a specific party by id."""
         party = Parties().get_specific_party_by_id(id)
         if party:
             return {"party": party.serialize(),"status": 200}, 200
@@ -86,7 +86,7 @@ class GetSpecificParty(Resource):
 
     @jwt_required
     def delete(self,id):
-        """ delete a specific party """
+        """ delete a specific party."""
 
         party = Parties().get_specific_party_by_id(id)
 
@@ -98,7 +98,7 @@ class GetSpecificParty(Resource):
 
     @jwt_required
     def patch(self, id):
-        """ update specif party details """
+        """ update specif party details."""
         update_party =GetSpecificParty.parser.parse_args()
         name = update_party['name']
         hqAddress = update_party['hqAddress']
@@ -106,7 +106,7 @@ class GetSpecificParty(Resource):
 
         validate_data = validations.Validations()
 
-        """check to see if the input strings are valid"""
+        """check to see if the input strings are valid."""
         if not validate_data.validate_input_fields(name):
             return {"status":400,"Message": "Please enter valid name"}, 400
         if not validate_data.validate_input_fields(hqAddress):
@@ -138,7 +138,7 @@ class GetSpecificParty(Resource):
 
 
 class CreateOffice(Resource):
-    """ create office """
+    """create office."""
     parser = reqparse.RequestParser(bundle_errors=True)
 
     parser.add_argument('name', type=str, 
@@ -148,14 +148,14 @@ class CreateOffice(Resource):
     
     @jwt_required
     def post(self):
-        """ create post office method """
+        """create post office method."""
 
         office_data = CreateOffice.parser.parse_args()
 
         name = office_data['name']
         Type = office_data['Type']
 
-        """ validate office data before submiiting """
+        """validate office data before submiiting."""
         validate_office_data = validations.Validations()
 
 
@@ -177,9 +177,10 @@ class CreateOffice(Resource):
             return {"status":201,"Message": "New office "
             "created successfully", "Office": office.serializer()}, 201
 
-    """ fetch all offices """
+   
     @jwt_required
     def get(self):
+        """fetch all offices."""
         return {
             
             "status": 200,
@@ -188,7 +189,7 @@ class CreateOffice(Resource):
         
         
 class GetSpecificOffice(Resource):
-    """ get a specific political office by id """
+    """get a specific political office by id."""
 
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, required=True, 
@@ -198,6 +199,7 @@ class GetSpecificOffice(Resource):
     
     @jwt_required
     def get(self, office_id):
+        """fetch a specific office data."""
   
         office = CreatePoliticalOffice().get_office_by_id(office_id)
         
@@ -208,7 +210,7 @@ class GetSpecificOffice(Resource):
             return {"Status":400, "Message": "This office does not exist"}, 400
     @jwt_required
     def delete(self,office_id):
-        """ delete a specific office """
+        """delete a specific office."""
 
         office = CreatePoliticalOffice().get_office_by_id(office_id)
 
@@ -220,16 +222,17 @@ class GetSpecificOffice(Resource):
 
     @jwt_required
     def patch(self, office_id):
-        """ update specif office details """
+        """ update specif office details."""
         update_office = GetSpecificOffice.parser.parse_args()
         name = update_office['name']
         Type = update_office['Type']
         
 
         validate_office_data = validations.Validations()
-        """check to see if the input strings are valid"""
+        """check to see if the input strings are valid."""
+
         if not validate_office_data.validate_input_fields(name):
-            return {"status":400,"Message": "Please enter " 
+            return {"status":400,"Message": "Please enter." 
             "valid office name"}, 400
         if not validate_office_data.validate_input_fields(Type):
             return {"status":400,"Message": 

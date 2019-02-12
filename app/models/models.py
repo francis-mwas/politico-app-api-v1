@@ -1,4 +1,4 @@
-"""import datetime to help you get the current date and time"""
+"""import datetime to help you get the current date and time."""
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 parties = []
@@ -7,7 +7,7 @@ users = []
 
 
 class Parties:
-    """ create class party that will hold party related data """
+    """ create class party that will hold party related data."""
     party_id = 1
 
     def __init__(self, name=None, hqAddress=None, logoUrl=None):
@@ -21,7 +21,7 @@ class Parties:
         Parties.party_id += 1
 
     def serialize(self):
-        """ serialize party data so that we can be able to returnn json """
+        """ serialize party data so that we can be able to returnn json."""
         return dict(
             id=self.id,
             name=self.name,
@@ -31,20 +31,20 @@ class Parties:
         )
 
     def get_party_by_name(self, name):
-        """ get party by nanme """
+        """get party by nanme."""
         for party in parties:
             if party.name == name:
                 return party
 
     def get_specific_party_by_id(self, id):
-        """ get a specific party by id """
+        """ get a specific party by id."""
         for party in parties:
             if party.id == id:
                 return party
 
 
 class CreatePoliticalOffice:
-    """ create new political office class"""
+    """ create new political office class."""
     office_id = 1
 
     def __init__(self, name=None, Type=None):
@@ -56,7 +56,7 @@ class CreatePoliticalOffice:
         CreatePoliticalOffice.office_id += 1
 
     def serializer(self):
-        """conver into a dictionary"""
+        """convert office data into a dictionary."""
         return dict(
             office_id=self.office_id,
             name=self.name,
@@ -65,20 +65,20 @@ class CreatePoliticalOffice:
         )
 
     def get_office_by_name(self, name):
-        """ fetch an office by name """
+        """ fetch an office by name."""
         for office in offices:
             if office.name == name:
                 return office
 
     def get_office_by_id(self, office_id):
-        """ fetch office by id """
+        """ fetch office by id."""
         for office in offices:
             if office.office_id == office_id:
                 return office
 
 
 class User:
-    """ creating class users """
+    """ creating class users."""
     user_id = 1
 
     def __init__(self, firstname=None, lastname=None, othername=None,
@@ -101,7 +101,7 @@ class User:
         
 
     def serialize(self):
-        """ convert user data into a dictionary """
+        """ convert user data into a dictionary."""
         return dict(
             firstname=self.firstname,
             lastname=self.lastname,
@@ -117,7 +117,7 @@ class User:
         )
 
     def get_user_by_email(self,email):
-        """ get user by email """
+        """ get user by email."""
         for user in users:
             if user.email == email:
                 return user
