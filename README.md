@@ -33,6 +33,8 @@ https://github.com/francis-mwas/politico-app-api-v1
 
 ### Create and activate virtual environment
 
+    in the root directory,open your terminal and create virtual environment by entering the commands below
+
     virtualenv env --python=python3.6
 
     source env/bin/activate
@@ -43,9 +45,9 @@ https://github.com/francis-mwas/politico-app-api-v1
 
 ### Running Politico application
     
-    $ export FLASK_APP = run.py
+    $ export FLASK_APP =run.py
 
-    $ export MODE = development
+    $ export MODE =development
 
     $ flask run
 
@@ -97,7 +99,7 @@ https://github.com/francis-mwas/politico-app-api-v1
     </tr>
     <tr>
      <td>GET</td>
-        <td>/api/v1/admin/ofice/<{id}>  </td>
+        <td>/api/v1/admin/offices/<{id}>  </td>
         <td> get a specific office </td>
         <td>Admin</td>
     </tr>
