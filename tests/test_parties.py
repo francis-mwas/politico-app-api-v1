@@ -6,7 +6,7 @@ from app import create_app
 class PoliticalParties(unittest.TestCase):
 
     def setUp(self):
-        """ application testing configurations"""
+        """application testing configurations."""
 
         self.app = create_app('testing')
         self.client = self.app.test_client()
@@ -14,12 +14,12 @@ class PoliticalParties(unittest.TestCase):
         self.app_context.push()
 
     def tearDown(self):
-        """ Teardown function"""
+        """Teardown function."""
         self.app_context.pop()
         
 
     def create_account(self):
-        """ user sign up function """
+        """user sign up function."""
 
         user_data = {
             	"firstname": "francis",
@@ -39,7 +39,7 @@ class PoliticalParties(unittest.TestCase):
         return response
 
     def signin(self):
-        """ user login function """
+        """user login function."""
         user_login_data = {
             "email": "mwas@gmail.com",
             "password": "mwas12345"
@@ -53,7 +53,7 @@ class PoliticalParties(unittest.TestCase):
         return response
 
     def generate_token(self):
-        """ test tokem generation after successful login """
+        """test tokem generation after successful login."""
         
         self.create_account()
 
@@ -66,7 +66,7 @@ class PoliticalParties(unittest.TestCase):
 
     
     def create_party(self, name):
-        "create a party"
+        "create a party."
         access_token = self.generate_token()
         party_data = {
             "name":name,
@@ -84,7 +84,7 @@ class PoliticalParties(unittest.TestCase):
 
    
     def test_party_creation(self):
-        """test party creation """
+        """test party creation."""
         response = self.create_party('odm')
         self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.data)[
@@ -92,7 +92,7 @@ class PoliticalParties(unittest.TestCase):
 
 
     def test_invalid_party_name(self):
-        """ test invalid party name while creating the party """
+        """test invalid party name while creating the party."""
         access_token = self.generate_token()
 
         create_invalid_party_name = {
@@ -115,7 +115,7 @@ class PoliticalParties(unittest.TestCase):
         
     
     def test_invalid_party_hqaddress(self):
-        """ test invalid party hqaddress while creating the party """
+        """test invalid party hqaddress while creating the party."""
         access_token = self.generate_token()
         create_invalid_party_hqaddres = {
             "name":"jubilee",
@@ -134,7 +134,7 @@ class PoliticalParties(unittest.TestCase):
         
                 
     def test_invali_logo_url(self):
-        """ test invalid logo url """
+        """test invalid logo url."""
         access_token = self.generate_token()
         invalid_logo_url = {
              "name":"jubilee",
@@ -152,7 +152,7 @@ class PoliticalParties(unittest.TestCase):
                          "Message"], "Please enter a valid logo url")
 
     def test_fetching_a_single_party(self):
-        """testing fetching a single party by id """
+        """testing fetching a single party by id."""
         access_token = self.generate_token()
         self.create_party('Kanu')
         response_data = self.client.get(
@@ -165,7 +165,7 @@ class PoliticalParties(unittest.TestCase):
         
 
     def test_fetch_all_parties(self):
-        """ test fetching all political parties """
+        """test fetching all political parties."""
         access_token = self.generate_token()
         response_data = self.client.get(
             "api/v1/admin/parties",
@@ -175,7 +175,7 @@ class PoliticalParties(unittest.TestCase):
         self.assertEqual(response_data.status_code, 200)
 
     def test_party_does_not_exist(self):
-        """ testing party does not exist """
+        """testing party does not exist."""
         access_token = self.generate_token()
         response = self.client.get(
             "api/v1/admin/parties/200",
@@ -185,7 +185,7 @@ class PoliticalParties(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_edit_party(self):
-        """ test editing a specific party """
+        """test editing a specific party."""
         access_token = self.generate_token()
         self.create_party('Kanu')
         update_data = {

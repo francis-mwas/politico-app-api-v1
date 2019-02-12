@@ -6,7 +6,7 @@ from app import create_app
 class PoliticalOffice(unittest.TestCase):
 
     def setUp(self):
-        """ application testing configurations"""
+        """application testing configurations."""
 
         self.app = create_app('testing')
         self.client = self.app.test_client()
@@ -14,11 +14,11 @@ class PoliticalOffice(unittest.TestCase):
         self.app_context.push()
 
     def tearDown(self):
-        """ Teardown """
+        """Teardown function."""
         self.app_context.pop()
 
     def create_account(self):
-        """ testing user sign up """
+        """testing user sign up."""
 
         user_data = {
             	"firstname": "francis",
@@ -38,7 +38,7 @@ class PoliticalOffice(unittest.TestCase):
         return response
 
     def user_login(self):
-        """ testing user login """
+        """testing user login."""
         login_data = {
             "email":"fram@gmail.com",
             "password":"mwas12345"
@@ -51,7 +51,7 @@ class PoliticalOffice(unittest.TestCase):
         return response
 
     def test_signin(self):
-        """ Testing user sign in """
+        """Testing user sign in."""
         self.create_account()
         response = self.user_login()
 
@@ -59,7 +59,7 @@ class PoliticalOffice(unittest.TestCase):
       
 
     def test_user_email_exists(self):
-        """ testing user sign up """
+        """testing user sign up."""
 
         user_data = {
             	"firstname": "francis",
@@ -85,7 +85,7 @@ class PoliticalOffice(unittest.TestCase):
 
 
     def test_user_does_not_exist_sign_up(self):
-        """ test non existence user signin"""
+        """test non existence user signin."""
         login_data = {
             "email": "john@gmail.com",
             "password": "john12345"
@@ -103,7 +103,7 @@ class PoliticalOffice(unittest.TestCase):
 
 
     def test_invalid_email(self):
-        """ test invalid user email registration """
+        """test invalid user email registration."""
         user_data = {
             	"firstname": "francis",
                 "lastname":"mwangi",
@@ -126,7 +126,7 @@ class PoliticalOffice(unittest.TestCase):
             "email address with only one @ and one dot")
     
     def test_invalid_firstname(self):
-        """ test invalid firstname"""
+        """test invalid firstname."""
         user_data = {
             	"firstname": "%43*****mmm",
                 "lastname":"mwangi",
@@ -149,7 +149,7 @@ class PoliticalOffice(unittest.TestCase):
             "firstname, with atleast characters")
 
     def test_invalid_lastname(self):
-        """ testing invalid lastname """
+        """testing invalid lastname."""
         user_data = {
             	"firstname": "john",
                 "lastname":"88989098",
@@ -172,7 +172,7 @@ class PoliticalOffice(unittest.TestCase):
             " atleast 3 characters and characters only")
     
     def test_invalid_othernames(self):
-        """ testing if othernames are valid """
+        """testing if othernames are valid."""
         user_data = {
             	"firstname": "john",
                 "lastname":"lastaname",
@@ -194,7 +194,7 @@ class PoliticalOffice(unittest.TestCase):
                          "Message"], "Othername should "
             "be atleast 3 characters and characters only")
     def test_invalid_phone_number(self):
-        """ test for invalid phone number """
+        """test for invalid phone number."""
         user_data = {
             	"firstname": "john",
                 "lastname":"lastaname",
@@ -216,7 +216,7 @@ class PoliticalOffice(unittest.TestCase):
                          "Message"], "Phone number " 
             "should be atleast 10 characters")
     def test_invalid_url(self):
-        """test for invalid passport url """
+        """test for invalid passport url."""
         user_data = {
             	"firstname": "john",
                 "lastname":"lastaname",
@@ -239,7 +239,7 @@ class PoliticalOffice(unittest.TestCase):
             "passport url ending with an image extension")
 
     def test_invalid_password(self):
-        """test for invalid password"""
+        """test for invalid password."""
         user_data = {
             	"firstname": "john",
                 "lastname":"lastaname",

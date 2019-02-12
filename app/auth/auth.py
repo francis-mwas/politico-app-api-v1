@@ -2,13 +2,13 @@ from flask_restful import Resource, reqparse
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import create_access_token
 import datetime
-"""local imports"""
+"""local imports."""
 from ..models.models import User, users
 from validations import validations
 
 
 class UserSignUp(Resource):
-    """creating classs user signup"""
+    """creating classs user signup."""
     parser = reqparse.RequestParser(bundle_errors=True)
 
     parser.add_argument('firstname', type=str, required=True,
@@ -30,7 +30,7 @@ class UserSignUp(Resource):
 
    
     def post(self):
-        """ create user account """
+        """create user account."""
         user_data = UserSignUp().parser.parse_args()
 
         firstname = user_data['firstname']
@@ -42,8 +42,9 @@ class UserSignUp(Resource):
         isAdmin = user_data['isAdmin']
         password = user_data['password']
 
-        """validate user data before submitting """
+        
         validate_user_data = validations.Validations()
+        """validate user data before submitting."""
 
         if not validate_user_data.validate_input_fields(firstname):
             return {"status": 400, "Message": "Please enter a valid "
@@ -72,8 +73,10 @@ class UserSignUp(Resource):
             "be between 3 and 10 alphanumeric characters"}, 400
 
        
-        """ check if user already exists """
+
         user_exist = User().get_user_by_email(email)
+        """ check if user already exists."""
+
         if user_exist:
             return {"status": 400, "Message": "This user already exist"}, 400
 
@@ -85,12 +88,12 @@ class UserSignUp(Resource):
             "status": 201,
             "Message": "Your account created successfully"
         }, 201
-    """ get all users """
+    """get all users."""
     def get(self):
         return {"status": 200, "users":[user.serialize() for user in users ]}, 200
 
 class UserLogin(Resource):
-    """ user login """
+    """ user login."""
     parser =reqparse.RequestParser()
 
     parser.add_argument('email', type=str, required=True, 
@@ -100,6 +103,7 @@ class UserLogin(Resource):
     
 
     def post(self):
+        """ login user."""
         login_data = UserLogin.parser.parse_args()
 
         email = login_data['email']
@@ -113,8 +117,9 @@ class UserLogin(Resource):
             return {"status": 400, "Message": "Password should start with alphanumeric"
             "character and have length between 3 to 10 characters"}, 400
         
-        """ check is user already registered"""
+        
         user_exist = User().get_user_by_email(email)
+        """check is user already registered."""
       
         if user_exist:
             if not check_password_hash(user_exist.hashed_password, password):

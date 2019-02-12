@@ -6,7 +6,7 @@ from app import create_app
 class PoliticalOffice(unittest.TestCase):
 
     def setUp(self):
-        """ application testing configurations"""
+        """ application testing configurations."""
 
         self.app = create_app('testing')
         self.client = self.app.test_client()
@@ -14,11 +14,11 @@ class PoliticalOffice(unittest.TestCase):
         self.app_context.push()
 
     def tearDown(self):
-        """ Teardown function"""
+        """ Teardown function."""
         self.app_context.pop()
 
     def create_account(self):
-        """ user sign up function """
+        """ user sign up function."""
 
         user_data = {
             	"firstname": "francis",
@@ -37,7 +37,7 @@ class PoliticalOffice(unittest.TestCase):
         )
         return response
     def signin(self):
-        """ user login function """
+        """user login function."""
         user_login_data = {
             "email": "mwas@gmail.com",
             "password": "mwas12345"
@@ -50,7 +50,7 @@ class PoliticalOffice(unittest.TestCase):
         return response
 
     def generate_token(self):
-        """ test tokem generation after successful login """
+        """test tokem generation after successful login."""
         self.create_account()
         response = self.signin()
         token = json.loads(response.data).get("access_token", None)
@@ -60,7 +60,7 @@ class PoliticalOffice(unittest.TestCase):
 
 
     def create_office(self, name):
-        """ function to create office """
+        """function to create office."""
         access_token = self.generate_token()
         create_office_data = {
             "name":name,
@@ -75,7 +75,7 @@ class PoliticalOffice(unittest.TestCase):
         return response
 
     def test_office_creation(self):
-        """ test office creation """
+        """test office creation."""
         response = self.create_office('Governor')
         self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.data)[
@@ -83,7 +83,7 @@ class PoliticalOffice(unittest.TestCase):
     
 
     def test_office_creation_with_invalid_name(self):
-        """test office creation with invalid data """
+        """test office creation with invalid data."""
         access_token = self.generate_token()
         office_data = {
             "name":"222222#@",
@@ -100,7 +100,7 @@ class PoliticalOffice(unittest.TestCase):
                          "Message"], "Please enter valid office name")
 
     def test_office_creation_with_invalid_type(self):
-        """ test office creation with invalid type """
+        """test office creation with invalid type."""
         access_token = self.generate_token()
         create_office = {
             "name":"Gubernatorial",
@@ -117,7 +117,7 @@ class PoliticalOffice(unittest.TestCase):
                          "Message"], "Please enter valid office type")
 
     def test_fetching_a_single_office(self):
-        """testing fetching a single office by id """
+        """testing fetching a single office by id."""
 
         access_token = self.generate_token()
         self.create_office('Office of the senator')
@@ -132,7 +132,7 @@ class PoliticalOffice(unittest.TestCase):
     
     
     def test_fetch_all_offices(self):
-        """ test fetching all political offices """
+        """test fetching all political offices."""
         access_token = self.generate_token()
         response_data = self.client.get(
             "api/v1/admin/offices",
@@ -142,7 +142,7 @@ class PoliticalOffice(unittest.TestCase):
         self.assertEqual(response_data.status_code, 200)
 
     def test_office_does_not_exist(self):
-        """ testing office does not exist """
+        """testing office does not exist."""
         access_token = self.generate_token()
         
         response = self.client.get(
@@ -155,7 +155,7 @@ class PoliticalOffice(unittest.TestCase):
 
 
     def test_edit_office(self):
-        """ test editing a specific office """
+        """test editing a specific office."""
         access_token = self.generate_token()
         self.create_office('Office governor')
         update_data = {
