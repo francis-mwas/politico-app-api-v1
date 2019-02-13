@@ -10,6 +10,7 @@ from validations import validations
 
 class Party(Resource):
     """ create class Parties."""
+
     parser = reqparse.RequestParser(bundle_errors=True)
 
     parser.add_argument('name', type=str, required=True,
@@ -22,6 +23,7 @@ class Party(Resource):
     # @jwt_required
     def post(self):
         """create post party method."""
+
         party_data = Party.parser.parse_args()
 
         name = party_data['name']
@@ -37,10 +39,11 @@ class Party(Resource):
             return {"status":400,"Message": "Please enter valid headquarter name"}, 400
         if not validate_data.validate_url(logoUrl):
             return {"status":400, "Message": "Please enter a valid logo url"}, 400
-         
-        """check of party exist."""
+       
 
         if Parties().get_party_by_name(name):
+            """check of party exist."""
+
             return {"status": 400, "Message": "This party already exist"}, 400
         
             
@@ -59,11 +62,13 @@ class Party(Resource):
     @jwt_required
     def get(self):
         """fetch all political parties."""
+
         return{"status":200,"parties":[party.serialize() for party in parties]}
 
 
 class GetSpecificParty(Resource):
     """get a specific political party by using id."""
+
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, required=True, 
     help='Please fill in this field')
@@ -75,6 +80,7 @@ class GetSpecificParty(Resource):
     @jwt_required
     def get(self, id):
         """ get a specific party by id."""
+
         party = Parties().get_specific_party_by_id(id)
         if party:
             return {"party": party.serialize(),"status": 200}, 200
@@ -99,6 +105,7 @@ class GetSpecificParty(Resource):
     @jwt_required
     def patch(self, id):
         """ update specif party details."""
+
         update_party =GetSpecificParty.parser.parse_args()
         name = update_party['name']
         hqAddress = update_party['hqAddress']
@@ -139,6 +146,7 @@ class GetSpecificParty(Resource):
 
 class CreateOffice(Resource):
     """create office."""
+
     parser = reqparse.RequestParser(bundle_errors=True)
 
     parser.add_argument('name', type=str, 
@@ -171,8 +179,8 @@ class CreateOffice(Resource):
             return {"Status": 400, "Message": "Office name "
             "already exist"},400
 
-        office = CreatePoliticalOffice(name, Type)
-        offices.append(office)
+        office = CreatePoliticalOffice(Type,name)
+        office.create_office()
         if office:
             return {"status":201,"Message": "New office "
             "created successfully", "Office": office.serializer()}, 201
@@ -181,6 +189,7 @@ class CreateOffice(Resource):
     @jwt_required
     def get(self):
         """fetch all offices."""
+
         return {
             
             "status": 200,
@@ -223,6 +232,7 @@ class GetSpecificOffice(Resource):
     @jwt_required
     def patch(self, office_id):
         """ update specif office details."""
+
         update_office = GetSpecificOffice.parser.parse_args()
         name = update_office['name']
         Type = update_office['Type']
@@ -252,6 +262,7 @@ class GetSpecificOffice(Resource):
                 "status": 200,
                 "Party": office.serializer()
             }, 200
+            
      
              
         
