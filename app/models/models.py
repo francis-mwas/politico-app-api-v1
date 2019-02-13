@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash
 import psycopg2
 from flask import current_app
 
-
 class DatabaseConnection:
     def __init__(self):
         self.host = current_app.config["DB_HOST"]
