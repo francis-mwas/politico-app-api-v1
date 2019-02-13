@@ -3,7 +3,7 @@ from flask import Flask
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
 """local imports."""
-from ..models.models import parties,Parties, CreatePoliticalOffice, offices
+from ..models.models import  Parties, CreatePoliticalOffice
 
 from validations import validations
 
@@ -19,7 +19,7 @@ class Party(Resource):
     parser.add_argument('logoUrl', type=str, required=True,
          help='This field cant be empty')
 
-    @jwt_required
+    # @jwt_required
     def post(self):
         """create post party method."""
         party_data = Party.parser.parse_args()
@@ -47,7 +47,7 @@ class Party(Resource):
 
          
         party = Parties(name,hqAddress,logoUrl)
-        parties.append(party)
+        party.create_party()
         if party:
             return {
                     "status":201,"Message": "Party reqistered successfully",

@@ -1,12 +1,16 @@
 import os
 
-
 class Config:
     """ main class configurations."""
     DEBUG = False
     TESTING = True
     CSRF_ENABLED = True
-    SECRET_KEY = 'hellofrancis'
+
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    DB_HOST = os.getenv('DB_HOST')
+    DB_USERNAME = os.getenv('DB_USERNAME')
+    DB_PASSWORD = os.getenv('DB_PASSWORD')
+    DB_NAME = os.getenv('DB_NAME')
 
 
 class ProductionConfiguration(Config):
@@ -32,3 +36,5 @@ app_config = {
     'development': DevelopmentConfiguration,
     'default': DevelopmentConfiguration
 }
+
+
