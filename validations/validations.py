@@ -30,12 +30,6 @@ class Validations:
         return re.match("^[a-zA-Z0-9]{3,10}$",password)
 
   
-    def validate_is_admin(self, isAdmin):
-        """ validate if is admin is between the range of 1 and 0."""
-
-        return re.match("^[0-1]{,1}$", isAdmin)
-
-
     def validate_url(self, url):
         """ function to validate url."""
 
@@ -45,5 +39,5 @@ class Validations:
         """ check if the url is valid."""  
 
         return re.match("^[1-9]\d$", id)
-            
+
     
