@@ -34,10 +34,9 @@ class Validations:
         """ function to validate url."""
 
         return re.search(r"^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,}(?:/[^/#?]+)+\.(?:jp?g|gif|png)$",url)
+            
          
-    def validate_urls_id(self, id):
-        """ check if the url is valid."""  
 
-        return re.match("^[1-9]\d$", id)
+   
 
     
