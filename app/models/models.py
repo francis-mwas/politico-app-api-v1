@@ -4,9 +4,6 @@ from werkzeug.security import generate_password_hash
 import psycopg2
 from flask import current_app
 
-users = []
-parties = []
-offices = []
 
 class DatabaseConnection:
     def __init__(self):
@@ -304,4 +301,4 @@ class User(DatabaseConnection):
         for user in users:
             if user.email == email:
                 return user
-                
+
