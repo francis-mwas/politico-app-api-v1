@@ -4,8 +4,7 @@ from werkzeug.security import generate_password_hash
 import psycopg2
 from flask import current_app
 
-users = []
-offices = []
+
 
 class DatabaseConnection:
     def __init__(self):
