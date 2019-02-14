@@ -3,9 +3,8 @@ from werkzeug.security import check_password_hash
 from flask_jwt_extended import create_access_token
 import datetime
 
-from ..models.models import User, users
+from ..models.models import User
 from validations import validations
-
 
 class UserSignUp(Resource):
     """creating classs user signup."""
@@ -27,7 +26,6 @@ class UserSignUp(Resource):
     parser.add_argument('password', type=str, required=True,
                         help='This is field is required')
 
-   
     def post(self):
         """create user account."""
 
@@ -67,8 +65,6 @@ class UserSignUp(Resource):
             return {"status": 400, "Message": "Password must "
             "be between 3 and 10 alphanumeric characters"}, 400
 
-       
-
         user_exist = User().get_user_by_email(email)
         """ check if user already exists."""
 
@@ -77,8 +73,6 @@ class UserSignUp(Resource):
 
         user = User(firstname, lastname, othername, email,
                     phoneNumber,passportUrl,password)
-
-        print(user.password)
 
         user.register_user()
         return {
@@ -89,19 +83,20 @@ class UserSignUp(Resource):
     def get(self):
         """get all users."""
 
-        return {"status": 200, "users":[user.serialize() for user in users ]}, 200
+        users = User().fetch_all_users()
+        if users:
+             return {"status": 200, "users":[user.serialize() for user in users]}, 200
+        return {"Message": "No available users", "status": 404},404
 
 class UserLogin(Resource):
     """ user login."""
 
-    parser =reqparse.RequestPaalrightrser()
-alright
-    parser.add_argument('emailalright', type=str, required=True, 
-        help="The email field alrightir required to login")
+    parser =reqparse.RequestParser()
+    parser.add_argument('email', type=str, required=True, 
+        help="The email field required to login")
     parser.add_argument('password', type=str, required=True,
         help="Password field cannot be empty")
     
-
     def post(self):
         """ login user."""
 
@@ -118,19 +113,19 @@ alright
             return {"status": 400, "Message": "Password should start with alphanumeric"
             "character and have length between 3 to 10 characters"}, 400
         
-        
         user_exist = User().get_user_by_email(email)
         """check is user already registered."""
       
         if user_exist:
             if not check_password_hash(user_exist.hashed_password, password):
-                return {"Message":"Wrong password"}
-            token = create_access_token(user_exist.email)
+                return {"Message":"Wrong password", "status":401}, 401
+            expires = datetime.timedelta(minutes=60)
+            token = create_access_token(identity=user_exist.serialize(), expires_delta=expires)
             return {
-            "access_token":token,
-            "Message": "Welcome you have successfully logged in", 
-            "status":200},200
-        return {"status": 404, "message": "The user is not found on this server"},404
-        
 
-        
+            "access_token": token,
+            "Message": "Welcome you have successfully logged in", 
+            "status": 200}, 200
+
+        return {"status": 404, "message": "The user is not found on this server"},404
+

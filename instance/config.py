@@ -32,6 +32,7 @@ class TestingConfiguration(Config):
 
     TESTING = True
     DEBUG = True
+    DB_NAME = os.getenv('DB_TEST_NAME')
 
 
 app_config = {

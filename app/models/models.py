@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash
 import psycopg2
 from flask import current_app
 
+
 class DatabaseConnection:
     def __init__(self):
         self.host = current_app.config["DB_HOST"]
@@ -17,10 +18,7 @@ class DatabaseConnection:
             password=self.password,
             user =self.username
             )
-
-
         self.cursor = self.conn.cursor()
-
 
 
 class Parties(DatabaseConnection):
@@ -32,11 +30,9 @@ class Parties(DatabaseConnection):
         self.name = name
         self.hqAddress = hqAddress
         self.logoUrl = logoUrl
-        self.date_created = str(
-            datetime.now().replace(microsecond=0, second=0))
+        self.date_created =datetime.now().replace(microsecond=0, second=0)
         self.id = None
-
-
+    
     def create_tables(self):
 
         self.cursor.execute(
@@ -52,8 +48,6 @@ class Parties(DatabaseConnection):
         )
         self.conn.commit()
 
-
-   
     def drop_table(self):
         """ function to drop table parties."""
 
@@ -69,14 +63,13 @@ class Parties(DatabaseConnection):
 
         self.cursor.execute(
             
-            '''INSERT INTO parties(name, hqAddress,
+           '''INSERT INTO parties(name, hqAddress,
              logoUrl, date_created) VALUES(%s, %s, %s, %s)''',
 
-            (self.name, self.hqAddress, self.logoUrl, self.date_created)
+           (self.name, self.hqAddress, self.logoUrl, self.date_created)
         )
         self.conn.commit()
         self.cursor.close()
-
 
     def serialize(self):
         """ serialize party data so that we can be able to returnn json."""
@@ -86,9 +79,8 @@ class Parties(DatabaseConnection):
             name=self.name,
             hqAddress=self.hqAddress,
             logoUrl=self.logoUrl,
-            date_created=self.date_created
+            date_created=str(self.date_created)
         )
-
 
     def get_party_by_name(self, name):
         """get party by nanme."""
@@ -101,7 +93,7 @@ class Parties(DatabaseConnection):
         self.cursor.close()
 
         if party:
-            return party
+            return self.map_parties(party)
         return None
 
     def get_specific_party_by_id(self, id):
@@ -114,35 +106,61 @@ class Parties(DatabaseConnection):
         party = self.cursor.fetchone()
         self.conn.commit()
         self.cursor.close()
-
         if party:
-            return self.map_party(party)
+            return self.map_parties(party)
         return None
 
-    def map_party(self, data):
-        """ party to an object"""
+    def get_all_parties(self):
+        """fetch all parties."""
 
-        self.id = data[0]
-        self.name = data[1]
-        self.hqAddress = data[2]
-        self.logoUrl = data[3]
-        self.date_created = data[4]
+        self.cursor.execute("SELECT * FROM parties")
+        parties = self.cursor.fetchall()
+        self.conn.commit()
+        self.cursor.close()
+
+        if parties:
+            return [self.map_parties(party) for party in parties]
+        return None
+
+    def delete_party(self, id):
+        """delete party."""
+
+        self.cursor.execute(
+            "DELETE FROM parties WHERE id=%s", (id,)
+        )
+        self.conn.commit()
+        self.cursor.close()
+    
+    def update_party(self, id):
+        """update specific party by id"""
+
+        self.cursor.execute(
+            """
+            UPDATE parties SET name =%s,hqaddress=%s, logourl=%s WHERE id=%s""",
+             (self.name, self.hqAddress, self.logoUrl, id)
+            )
+        self.conn.commit()
+        self.cursor.close()
+
+    def map_parties(self, data):
+        """ convert party tuple to an object"""
+        party = Parties(name=data[1], hqAddress=data[2], logoUrl=data[3])
+        party.id = data[0]
+        party.date_created = data[4]
+        self = party
 
         return self
+
 
 class CreatePoliticalOffice(DatabaseConnection):
     """ create new political office class."""
  
-
     def __init__(self, name=None, Type=None):
         super().__init__()
         self.name = name
         self.Type = Type
-        self.date_created = str(
-            datetime.now().replace(microsecond=0, second=0))
-        self.office_id = None
+        self.date_created = datetime.now().replace(microsecond=0, second=0)
        
-
     def create_office_table(self):
         """create table offices."""
 
@@ -186,32 +204,84 @@ class CreatePoliticalOffice(DatabaseConnection):
             office_id=self.office_id,
             name=self.name,
             Type=self.Type,
-            date_created=self.date_created
+            date_created=str(self.date_created)
         )
+
+    def fetch_all_offices(self):
+        """get all offices."""
+
+        self.cursor.execute("SELECT * FROM offices")
+        offices = self.cursor.fetchall()
+        self.conn.commit()
+        self.cursor.close()
+
+        if offices:
+            return [self.Objectify_office(office) for office in offices]
+        return None
 
     def get_office_by_name(self, name):
         """ fetch an office by name."""
 
-        for office in offices:
-            if office.name == name:
-                return office
+        self.cursor.execute(
+            "SELECT * FROM offices WHERE name=%s", (name,)
+            )
+
+        office = self.cursor.fetchone()
+        self.conn.commit()
+        self.cursor.close()
+        if office:
+            return self.Objectify_office(office)
+        None
 
     def get_office_by_id(self, office_id):
         """ fetch office by id."""
 
-        for office in offices:
-            if office.office_id == office_id:
-                return office
+        self.cursor.execute(
+            "SELECT * FROM offices WHERE office_id=%s", (office_id,)
+        )
+        office = self.cursor.fetchone()
+        self.conn.commit()
+        self.cursor.close()
 
+        if office:
+            return self.Objectify_office(office)
+        return None
+
+    def delete_office(self, office_id):
+        """delete party by id."""
+
+        self.cursor.execute(
+            "DELETE FROM offices WHERE office_id =%s", (office_id,)
+        )
+        self.conn.commit()
+        self.cursor.close()
+
+    def update_office(self, office_id):
+        """update specific party."""
+
+        self.cursor.execute(
+            """UPDATE offices SET name=%s, Type=%s WHERE office_id=%s""", 
+            (self.name,self.Type, office_id)
+          
+        )
+        self.conn.commit()
+        self.cursor.close()
+        
+    def Objectify_office(self, office_data):
+        """convert office data from tuple to an objet"""
+
+        self.office_id = office_data[0]
+        self.name = office_data[1]
+        self.Type = office_data[2]
+        self.date_created = office_data[3]
+        return self
 
 class User(DatabaseConnection):
     """ creating class users."""
 
-    user_id = 1
-
-    def __init__(self, firstname=None, lastname=None, othername=None,
-     email=None, phoneNumber=None, passportUrl=None, 
-     password=None, isAdmin=False):
+    def __init__(self, firstname= None, lastname= None, othername= None,
+     email= None, phoneNumber= None, passportUrl= None, 
+     password= None, isAdmin= False):
 
         super().__init__()
         self.firstname = firstname
@@ -224,8 +294,7 @@ class User(DatabaseConnection):
             self.hashed_password =generate_password_hash(password)
         self.isAdmin = isAdmin
         self.createdDate = str(datetime.now().replace(second=0, microsecond=0))
-        self.user_id = User.user_id
-        User.user_id += 1
+        self.user_id = None
     
     def create_table_users(self):
         """create table users """
@@ -258,7 +327,6 @@ class User(DatabaseConnection):
         )
         self.conn.commit()
 
-
     def register_user(self):
         """insert user data into a database."""
 
@@ -268,14 +336,12 @@ class User(DatabaseConnection):
             phoneNumber,passportUrl,password,isAdmin,createdDate
             ) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """, 
-            (self.firstname, self.lastname, self.othername,self.email,
-            self.phoneNumber,self.passportUrl, self.hashed_password,self.isAdmin,
-            self.createdDate)
+            (self.firstname, self.lastname, self.othername, self.email,
+             self.phoneNumber, self.passportUrl, self.hashed_password, self.isAdmin,
+             self.createdDate)
         )
         self.conn.commit()
         self.cursor.close()
-
-               
 
     def serialize(self):
         """ convert user data into a dictionary."""
@@ -287,17 +353,51 @@ class User(DatabaseConnection):
             email=self.email,
             phoneNumber=self.phoneNumber,
             passportUrl=self.passportUrl,
-            isAdmin=self.isAdmin,
             password=self.hashed_password,
-            createdDate=self.createdDate,
+            isAdmin=self.isAdmin,
+            createdDate=str(self.createdDate),
             user_id=self.user_id,
 
         )
 
-    def get_user_by_email(self,email):
-        """ get user by email."""
+    def fetch_all_users(self):
+        """get all users."""
 
-        for user in users:
-            if user.email == email:
-                return user
+        self.cursor.execute("SELECT * FROM users")
+        users = self.cursor.fetchall()
+        self.conn.commit()
+        self.cursor.close()
+
+        if users:
+            return [self.objectify_user_data(user) for user in users]
+        return None
+
+    def get_user_by_email(self,email):
+         """ get user by email."""
+         self.cursor.execute(
+             "SELECT * FROM users WHERE email=%s", (email, )
+         )
+         user_data = self.cursor.fetchone()
+         self.conn.commit()
+         self.cursor.close()
+         if user_data:
+             return self.objectify_user_data(user_data)
+         return None
+    
+    def objectify_user_data(self,user_data):
+        """convert user data into a dictionary """
+
+        self.user_id= user_data[0]
+        self.firstname= user_data[1]
+        self.lastname = user_data[2]
+        self.othername = user_data[3]
+        self.email = user_data[4]
+        self.phoneNumber = user_data[5]
+        self.passportUrl = user_data[6]
+        self.hashed_password = user_data[7]
+        self.isAdmin = user_data[8]
+        self.createdDate = user_data[9]
+        return self
+
+
 

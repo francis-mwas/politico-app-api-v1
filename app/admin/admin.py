@@ -1,12 +1,12 @@
 """ Global iports."""
 from flask import Flask
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 """local imports."""
 from ..models.models import  Parties, CreatePoliticalOffice
+from .is_admin import admin_access
 
 from validations import validations
-
 
 class Party(Resource):
     """ create class Parties."""
@@ -20,7 +20,8 @@ class Party(Resource):
     parser.add_argument('logoUrl', type=str, required=True,
          help='This field cant be empty')
 
-    # @jwt_required
+    @jwt_required
+    @admin_access
     def post(self):
         """create post party method."""
 
@@ -51,10 +52,11 @@ class Party(Resource):
          
         party = Parties(name,hqAddress,logoUrl)
         party.create_party()
+        
         if party:
             return {
-                    "status":201,"Message": "Party reqistered successfully",
-                    "party":party.serialize()
+                    "status": 201, "Message": "Party reqistered successfully",
+                    "party": party.serialize()
             }, 201
         return {"status": "400","Message": "Party not created"}, 400
              
@@ -63,8 +65,12 @@ class Party(Resource):
     def get(self):
         """fetch all political parties."""
 
-        return{"status":200,"parties":[party.serialize() for party in parties]}
-
+        parties = Parties().get_all_parties()
+        if parties:
+            return{"status":200,"parties":[party.serialize() for party in parties]},200
+        else:
+            return {"status": 404, "message": "There are no parties available at the moment"},404
+    
 
 class GetSpecificParty(Resource):
     """get a specific political party by using id."""
@@ -87,22 +93,22 @@ class GetSpecificParty(Resource):
 
         return {"status": 404,"Message": "That party does not exist"}, 404
             
-
-       
-
     @jwt_required
+    @admin_access
     def delete(self,id):
         """ delete a specific party."""
 
         party = Parties().get_specific_party_by_id(id)
+        print(party)
 
         if not party:
             return {"status": 404,"message": "this party does not exist"},404
         else:
-            parties.remove(party)
+            Parties().delete_party(id)
             return {"status": 200,"Message": "party deleted successfully"}
 
     @jwt_required
+    @admin_access
     def patch(self, id):
         """ update specif party details."""
 
@@ -123,25 +129,23 @@ class GetSpecificParty(Resource):
             return {"status":400, "Message": "Please enter a "
             "valid logo url"}, 400
      
-        party = Parties().get_specific_party_by_id(id)
-        if not party:
-            return {
-                "status": 404,
-                "Message": "This party does not exist"
-            }, 404
-        else:
-            party.name = name
-            party.hqAddress = hqAddress
-            party.logoUrl = logoUrl
-            return {
-                "message": "Party details updated successfully",
-                "status": 200,
-                "Party": party.serialize()
-            }, 200
-     
+        if Parties().get_specific_party_by_id(id):
+            party = Parties(name, hqAddress, logoUrl)
+            party.update_party(id)
+            return{"Message": "party details updated", "status": 200}, 200
+        return {"Message": "party does not exist", "status": 404}, 404    
 
 
+class GetPartyByName(Resource):
 
+    def get(self, name):
+        """get a party by name."""
+
+        party = Parties().get_party_by_name(name)
+        print(party)
+        if party:
+            return {"Message": party.serialize(), "status": 200},200
+        return{"Message": "party name does not exists"},400
 
 
 class CreateOffice(Resource):
@@ -155,6 +159,7 @@ class CreateOffice(Resource):
         required=True, help='Please fill in this field')
     
     @jwt_required
+    @admin_access
     def post(self):
         """create post office method."""
 
@@ -181,22 +186,24 @@ class CreateOffice(Resource):
 
         office = CreatePoliticalOffice(Type,name)
         office.create_office()
-        if office:
-            return {"status":201,"Message": "New office "
-            "created successfully", "Office": office.serializer()}, 201
+        return {
+            "status": 201,
+            "Message": "Office created successfully"
+        }, 201
 
-   
     @jwt_required
     def get(self):
         """fetch all offices."""
+    
+        offices =CreatePoliticalOffice().fetch_all_offices()
+        if offices:
+            return {
+                    "status": 200,
+                    "Offices": [office.serializer() for office in offices]
+            }
+        return {"Message": "There are no offices available", "status": 404},404
 
-        return {
-            
-            "status": 200,
-            "Offices": [office.serializer() for office in offices]
-        }
-        
-        
+
 class GetSpecificOffice(Resource):
     """get a specific political office by id."""
 
@@ -217,7 +224,9 @@ class GetSpecificOffice(Resource):
           
         else:
             return {"Status":400, "Message": "This office does not exist"}, 400
+
     @jwt_required
+    @admin_access
     def delete(self,office_id):
         """delete a specific office."""
 
@@ -226,10 +235,11 @@ class GetSpecificOffice(Resource):
         if not office:
             return {"status": 404,"message": "this office does not exist"},404
         else:
-            offices.remove(office)
+            CreatePoliticalOffice().delete_office(office_id)
             return {"status": 200,"Message": "office deleted successfully"}
 
     @jwt_required
+    @admin_access
     def patch(self, office_id):
         """ update specif office details."""
 
@@ -248,26 +258,31 @@ class GetSpecificOffice(Resource):
             return {"status":400,"Message": 
             "Please enter valid office type"}, 400
      
-        office = CreatePoliticalOffice().get_office_by_id(office_id)
-        if not office:
-            return {
+        if CreatePoliticalOffice().get_office_by_id(office_id):
+
+            office =CreatePoliticalOffice(Type,name)
+            office.update_office(office_id)
+            return{"Message": "party details updated", "status": 200}, 200
+        return {
                 "status": 404,
                 "Message": "Office does not exist"
-            }, 404
-        else:
-            office.name = name
-            office.Type = Type
-            return {
-                "message": "Office details updated successfully",
-                "status": 200,
-                "Party": office.serializer()
-            }, 200
-            
-     
+            }, 404 
+
+class GetOfficeByName(Resource):
+    
+   
+    def get(self, name):
+        """get office by name."""
+
+        office = CreatePoliticalOffice().get_office_by_name(name)
+        if office:
+            return {"Office": office.serializer(), "status": 200}
+        return {"Message": "This is office does not exist", "status":404},404
+
+
              
         
             
-
         
 
 
