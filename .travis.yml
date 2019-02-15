@@ -8,9 +8,18 @@ install:
   - pip install pytest
   - pip install pytest-cov
   - pip install coveralls
-  - pip install -r requirements.txt
 script:
   - pytest --cov=app
+
+services:
+  - postgresql
+addons:
+  postgresql: "9.5"
+
+before_script:
+  - psql -c 'CREATE DATABASE politico' -U postgres
+  - psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to postgres;" -U postgres
+
 
 after_success:
   - coveralls
