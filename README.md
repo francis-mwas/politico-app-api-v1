@@ -63,73 +63,73 @@ https://github.com/francis-mwas/politico-app-api-v1
     </tr>
     <tr>
         <td>POST</td>
-        <td>/api/v1/admin/parties </td>
+        <td>/api/v2/admin/parties </td>
         <td>create party </td>
         <td>Admin</td>
     </tr>
     <tr>
      <td>GET</td>
-        <td>/api/v1/admin/parties </td>
+        <td>/api/v2/admin/parties </td>
         <td>Fetch all parties </td>
         <td>Admin</td>
     </tr>
     <tr>
      <td>DELETE</td>
-        <td>/api/v1/admin/parties/<{id}> </td>
+        <td>/api/v2/admin/parties/<{id}> </td>
         <td>delete a specific party </td>
         <td>Admin</td>
     </tr>
     <tr>
      <td>PATCH</td>
-        <td>/api/v1/admin/parties/<{id}></td>
+        <td>/api/v2/admin/parties/<{id}></td>
         <td>edit a specific party </td>
         <td>Admin</td>
     </tr>
      <tr>
      <td>GET</td>
-        <td>/api/v1/admin/parties/<{id}> </td>
+        <td>/api/v2/admin/parties/<{id}> </td>
         <td>get a specific party </td>
         <td>Admin</td>
     </tr>
     <tr>
      <td>POST</td>
-        <td>/api/v1/admin/offices </td>
+        <td>/api/v2/admin/offices </td>
         <td>create office </td>
         <td>Admin</td>
     </tr>
     <tr>
      <td>GET</td>
-        <td>/api/v1/admin/offices/<{id}>  </td>
+        <td>/api/v2/admin/offices/<{id}>  </td>
         <td> get a specific office </td>
         <td>Admin</td>
     </tr>
     <tr>
      <td>GET</td>
-        <td>/api/v1/admin/offices  </td>
+        <td>/api/v2/admin/offices  </td>
         <td>fetch all offices </td>
         <td>Admin</td>
     </tr>
     <tr>
      <td>PATCH</td>
-        <td>/api/v1/admin/offices/<{id}> </td>
+        <td>/api/v2/admin/offices/<{id}> </td>
         <td> update a specific office </td>
         <td>Admin</td>
     </tr>
     <tr>
      <td>POST</td>
-        <td>/api/V1/auth/signup </td>
+        <td>/api/V2/auth/signup </td>
         <td> create an account </td>
         <td>Admin /Users</td>
     </tr>
      <tr>
      <td>POST</td>
-        <td>/api/v1/auth/signin  </td>
+        <td>/api/v2/auth/signin  </td>
         <td>signin</td>
         <td>Admin /Users</td>
     </tr>
     <tr>
      <td>DELETE</td>
-        <td>/api/v1/admin/offices/<{id}> </td>
+        <td>/api/v2/admin/offices/<{id}> </td>
         <td>delete a specific office</td>
         <td>Admin</td>
     </tr>
