@@ -3,7 +3,7 @@ from flask import Flask
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 """local imports."""
-from ..models.models import  Parties, CreatePoliticalOffice
+from ..models.models import  Parties, CreatePoliticalOffice,Candidates
 from .is_admin import admin_access
 
 from validations import validations
@@ -279,10 +279,52 @@ class GetOfficeByName(Resource):
             return {"Office": office.serializer(), "status": 200}
         return {"Message": "This is office does not exist", "status":404},404
 
+class BecomeCandidate(Resource):
 
-             
+    parser = reqparse.RequestParser(bundle_errors=True)
+
+    parser.add_argument('office_id', type=str, 
+        required=True, help='Please fill in this field')
+    parser.add_argument('party_id', type=str, 
+         required=True, help='Please fill in this field')
+    parser.add_argument('candidate_id', type=str, 
+          required=True, help='Please fill in this field')
         
-            
+    @jwt_required
+    @admin_access
+    def post(self):
+        """create post party method."""
+
+        data = BecomeCandidate.parser.parse_args()
+
+        office_id= data['office_id']
+        party_id = data['party_id']
+        candidate_id = data['candidate_id']
+    
+        validate_data = validations.Validations()
+
+        """check to see if the input strings are valid."""
+        if not validate_data.validate_ids(office_id):
+                return {"status":400,"Message": "office id must be a number"}, 400
+        if not validate_data.validate_ids(party_id):
+                return {"status":400,"Message": "party id must be a number"}, 400
+        if not validate_data.validate_ids(candidate_id):
+                return {"status":400, "Message": "candidate id must be a number"}, 400
+        
+
+        candidate = Candidates().get_candidate_by_id(candidate_id)
+        if candidate:
+            return {"Status": 400, "Message": "candidate"
+            "already exist"},400
+
+        candidate = Candidates(office_id,party_id, candidate_id)
+        candidate.register_candidates()
+        return {
+            "status": 201,
+            "Message": "Candidate registered successfully"
+        }, 201
+
+
         
 
 

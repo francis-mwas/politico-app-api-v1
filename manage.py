@@ -1,4 +1,4 @@
-from app.models.models import Parties, CreatePoliticalOffice, User
+from app.models.models import Parties, CreatePoliticalOffice, User,Candidates
 from run import app
 
 
@@ -8,15 +8,17 @@ class Tables:
         Parties().create_tables()
         CreatePoliticalOffice().create_office_table()
         User().create_table_users()
+        Candidates().create_table_candidates()
 
     def drop_table(self):
         """function to drop tables."""
         Parties().drop_table()
         CreatePoliticalOffice().drop_table_offices()
         User().drop_table_user()
+        Candidates().drop_table_candidates()
 
     def create_admin(self):
-        """creating database admin."""
+        """creating admin."""
         user = User("fram", "mwas", "admin", "admin@gmail.com",
                     1234567, "http://andela.com/imgeas/img1.jpg", "12345", True)
         user.register_user()

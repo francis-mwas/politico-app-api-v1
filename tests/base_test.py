@@ -28,7 +28,7 @@ class BaseTest(unittest.TestCase):
             "password": "mwas12345"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -41,7 +41,7 @@ class BaseTest(unittest.TestCase):
             "password": "mwas12345"
         }
         response = self.client.post(
-            "api/v1/auth/signin",
+            "api/v2/auth/signin",
             data=json.dumps(login_data),
             headers={"content-type": "application/json"}
         )
@@ -69,7 +69,7 @@ class BaseTest(unittest.TestCase):
             "logoUrl": "http://images.com/img1.png",
         }
         response = self.client.post(
-            "api/v1/admin/parties",
+            "api/v2/admin/parties",
             data=json.dumps(party_data),
             headers={'Content-type': 'application/json',
                      "Authorization": f"Bearer {access_token}"}
@@ -85,7 +85,7 @@ class BaseTest(unittest.TestCase):
             "Type": "federal"
         }
         response = self.client.post(
-            "api/v1/admin/offices",
+            "api/v2/admin/offices",
             data=json.dumps(create_office_data),
             headers = {'Content-type': 'application/json',
              "Authorization": f"Bearer {access_token}" }
@@ -99,7 +99,7 @@ class BaseTest(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v1/auth/signin",
+            "api/v2/auth/signin",
             data=json.dumps(data),
             headers={"content-type": "application/json"}
         )

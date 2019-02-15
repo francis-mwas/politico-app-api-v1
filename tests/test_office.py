@@ -16,7 +16,7 @@ class PoliticalOffice(BaseTest):
         access_token = self.generate_token()
         self.create_office()
         response_data = self.client.get(
-            "api/v1/admin/offices",
+            "api/v2/admin/offices",
 
              headers={"content-type":"application/json",
 
@@ -32,7 +32,7 @@ class PoliticalOffice(BaseTest):
             "Type": "federal"
         }
         response = self.client.post(
-            "api/v1/admin/offices",
+            "api/v2/admin/offices",
             data=json.dumps(office_data),
             headers={"content-type": "application/json",
              "Authorization": f"Bearer {access_token}" }
@@ -49,7 +49,7 @@ class PoliticalOffice(BaseTest):
             "Type": "2222091"
         }
         response = self.client.post(
-            "api/v1/admin/offices",
+            "api/v2/admin/offices",
             data=json.dumps(create_office),
             headers={'content-type': 'application/json',
             "Authorization": f"Bearer {access_token}"}
@@ -64,7 +64,7 @@ class PoliticalOffice(BaseTest):
         access_token = self.generate_token()
         self.create_office()
         response_data = self.client.get(
-            "api/v1/admin/offices/1",
+            "api/v2/admin/offices/1",
             headers ={'content-type': 'application/json',
             'Authorization': f'Bearer {access_token}' }
         )
@@ -75,7 +75,7 @@ class PoliticalOffice(BaseTest):
         access_token = self.generate_token()
         
         response = self.client.get(
-            "api/v1/admin/office/200",
+            "api/v2/admin/office/200",
             headers = {"content-type": "application/json",
             "Authorization": f"Bearer {access_token}"}
         )
@@ -90,7 +90,7 @@ class PoliticalOffice(BaseTest):
             "Type": "federal"
         }
         response=self.client.patch(
-            "api/v1/admin/offices/1",
+            "api/v2/admin/offices/1",
             data=json.dumps(update_data),
             headers={"content-type":"application/json",
             "Authorization": f"Bearer {access_token}"}
