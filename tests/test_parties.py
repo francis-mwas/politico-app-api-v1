@@ -22,7 +22,7 @@ class PoliticalParties(BaseTest):
             "logoUrl":"localhost/images/img1.png"
         }
         res=self.client.post(
-            "api/v1/admin/parties",
+            "api/v2/admin/parties",
             data=json.dumps(create_invalid_party_name),
             headers={"content-type":"application/json",
             "Authorization": f"Bearer {access_token}"}
@@ -44,7 +44,7 @@ class PoliticalParties(BaseTest):
             "logoUrl":"img1.png"
         }
         res=self.client.post(
-            "api/v1/admin/parties",
+            "api/v2/admin/parties",
             data=json.dumps(create_invalid_party_hqaddres),
             headers={"content-type":"application/json",
              "Authorization": f"Bearer {access_token}"}
@@ -64,7 +64,7 @@ class PoliticalParties(BaseTest):
                 "logoUrl":"111111"
         }
         res = self.client.post(
-            "api/v1/admin/parties",
+            "api/v2/admin/parties",
             data=json.dumps(invalid_logo_url),
             headers={"content-type":"application/json",
             "Authorization": f"Bearer {access_token}"}
@@ -79,7 +79,7 @@ class PoliticalParties(BaseTest):
         access_token = self.generate_token()
         self.create_party()
         response_data = self.client.get(
-            "api/v1/admin/parties/1",
+            "api/v2/admin/parties/1",
             headers ={"content-type": "application/json",
             "Authorization": f"Bearer {access_token}"}
         )
@@ -92,7 +92,7 @@ class PoliticalParties(BaseTest):
         self.create_party()
         access_token = self.generate_token()
         response_data = self.client.get(
-            "api/v1/admin/parties",
+            "api/v2/admin/parties",
              headers={"content-type":"application/json",
              "Authorization": f"Bearer {access_token}"}
         )
@@ -103,7 +103,7 @@ class PoliticalParties(BaseTest):
 
         access_token = self.generate_token()
         response = self.client.get(
-            "api/v1/admin/parties/200",
+            "api/v2/admin/parties/200",
             headers = {"content-type": "application/json",
             "Authorization": f"Bearer {access_token}"}
         )
@@ -120,7 +120,7 @@ class PoliticalParties(BaseTest):
             "logoUrl": "http://images.com/img1.png",
         }
         response=self.client.patch(
-            "api/v1/admin/parties/1",
+            "api/v2/admin/parties/1",
             data=json.dumps(update_data),
             headers={"content-type":"application/json",
              "Authorization": f"Bearer {access_token}" }

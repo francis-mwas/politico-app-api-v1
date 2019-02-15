@@ -28,7 +28,7 @@ class PoliticalOffice(BaseTest):
 
         self.create_account()
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -47,7 +47,7 @@ class PoliticalOffice(BaseTest):
         self.create_account()
 
         response = self.client.post(
-            "api/v1/auth/signin",
+            "api/v2/auth/signin",
             data=json.dumps(login_data),
             headers={"content-type": "application/json"}
         )
@@ -69,7 +69,7 @@ class PoliticalOffice(BaseTest):
             "password": "mwas12345"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -93,7 +93,7 @@ class PoliticalOffice(BaseTest):
             "password": "mwas12345"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -117,7 +117,7 @@ class PoliticalOffice(BaseTest):
             "password": "mwas12345"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -141,7 +141,7 @@ class PoliticalOffice(BaseTest):
             "password": "mwas12345"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -165,7 +165,7 @@ class PoliticalOffice(BaseTest):
             "password": "mwas12345"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -189,7 +189,7 @@ class PoliticalOffice(BaseTest):
             "password": "mwas12345"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
@@ -213,7 +213,7 @@ class PoliticalOffice(BaseTest):
             "password": "q5"
         }
         response = self.client.post(
-            "api/v1/auth/signup",
+            "api/v2/auth/signup",
             data=json.dumps(user_data),
             headers={"content-type": "application/json"}
         )
