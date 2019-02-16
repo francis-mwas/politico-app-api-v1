@@ -73,6 +73,7 @@ class Parties(DatabaseConnection):
     def serialize(self):
         """ serialize party data so that we can be able to returnn json."""
         return dict(
+            id= self.id,
             name=self.name,
             hqAddress=self.hqAddress,
             logoUrl=self.logoUrl,
@@ -216,16 +217,17 @@ class CreatePoliticalOffice(DatabaseConnection):
             return [self.Objectify_office(office) for office in offices]
         return None
 
-    def get_office_by_name(self, name):
+    def get_office_by_type(self, type):
         """ fetch an office by name."""
 
         self.cursor.execute(
-            "SELECT * FROM offices WHERE name=%s", (name,)
+            "SELECT * FROM offices WHERE name=%s", (type,)
         )
 
         office = self.cursor.fetchone()
         self.conn.commit()
         self.cursor.close()
+      
         if office:
             return self.Objectify_office(office)
         None

@@ -176,8 +176,8 @@ class CreateOffice(Resource):
             return {"status":400,"Message": 
             "Please enter valid office type"}, 400
 
-        office_exist = CreatePoliticalOffice().get_office_by_name(name)
-        if office_exist:
+        office = CreatePoliticalOffice().get_office_by_type(Type)
+        if office:
             return {"Status": 400, "Message": "Office name "
             "already exist"},400
 
@@ -271,7 +271,7 @@ class GetOfficeByName(Resource):
     def get(self, name):
         """get office by name."""
 
-        office = CreatePoliticalOffice().get_office_by_name(name)
+        office = CreatePoliticalOffice().get_office_by_type(name)
         if office:
             return {"Office": office.serializer(), "status": 200}
         return {"Message": "This is office does not exist", "status":404},404
