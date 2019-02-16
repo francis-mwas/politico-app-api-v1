@@ -11,6 +11,8 @@ class UserSignUp(Resource):
 
     parser = reqparse.RequestParser(bundle_errors=True)
 
+    parser.add_argument('national_id', type=int, required=True,
+                        help='This field is required')
     parser.add_argument('firstname', type=str, required=True,
                         help='This field is required')
     parser.add_argument('lastname', type=str, required=True,
@@ -31,6 +33,7 @@ class UserSignUp(Resource):
 
         user_data = UserSignUp().parser.parse_args()
 
+        national_id = user_data['national_id']
         firstname = user_data['firstname']
         lastname = user_data['lastname']
         othername = user_data['othername']
@@ -71,7 +74,7 @@ class UserSignUp(Resource):
         if user_exist:
             return {"status": 400, "Message": "This user already exist"}, 400
 
-        user = User(firstname, lastname, othername, email,
+        user = User(national_id,firstname, lastname, othername, email,
                     phoneNumber,passportUrl,password)
 
         user.register_user()
@@ -118,11 +121,10 @@ class UserLogin(Resource):
       
         if user_exist:
             if not check_password_hash(user_exist.hashed_password, password):
-                return {"Message":"Wrong password", "status":401}, 401
+                return {"Message":"Wrong password", "status":400}, 400
             expires = datetime.timedelta(minutes=60)
             token = create_access_token(identity=user_exist.serialize(), expires_delta=expires)
             return {
-
             "access_token": token,
             "Message": "Welcome you have successfully logged in", 
             "status": 200}, 200
