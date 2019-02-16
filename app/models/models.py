@@ -31,7 +31,6 @@ class Parties(DatabaseConnection):
         self.hqAddress = hqAddress
         self.logoUrl = logoUrl
         self.date_created = datetime.now().replace(microsecond=0, second=0)
-        self.id = None
 
     def create_tables(self):
 
@@ -73,9 +72,8 @@ class Parties(DatabaseConnection):
 
     def serialize(self):
         """ serialize party data so that we can be able to returnn json."""
-
         return dict(
-            id=self.id,
+            id= self.id,
             name=self.name,
             hqAddress=self.hqAddress,
             logoUrl=self.logoUrl,
@@ -219,16 +217,17 @@ class CreatePoliticalOffice(DatabaseConnection):
             return [self.Objectify_office(office) for office in offices]
         return None
 
-    def get_office_by_name(self, name):
+    def get_office_by_type(self, type):
         """ fetch an office by name."""
 
         self.cursor.execute(
-            "SELECT * FROM offices WHERE name=%s", (name,)
+            "SELECT * FROM offices WHERE name=%s", (type,)
         )
 
         office = self.cursor.fetchone()
         self.conn.commit()
         self.cursor.close()
+      
         if office:
             return self.Objectify_office(office)
         None
@@ -280,11 +279,12 @@ class CreatePoliticalOffice(DatabaseConnection):
 class User(DatabaseConnection):
     """ creating class users."""
 
-    def __init__(self, firstname=None, lastname=None, othername=None,
+    def __init__(self, national_id=None,firstname=None, lastname=None, othername=None,
                  email=None, phoneNumber=None, passportUrl=None,
                  password=None, isAdmin=False):
 
         super().__init__()
+        self.national_id = national_id
         self.firstname = firstname
         self.lastname = lastname
         self.othername = othername
@@ -304,6 +304,7 @@ class User(DatabaseConnection):
             """
             CREATE TABLE users(
                 user_id serial PRIMARY KEY,
+                national_id INTEGER NOT NULL,
                 firstname VARCHAR NOT NULL,
                 lastname VARCHAR NOT NULL,
                 othername VARCHAR NOT NULL,
@@ -333,11 +334,11 @@ class User(DatabaseConnection):
 
         self.cursor.execute(
             """
-            INSERT INTO users (firstname,lastname,othername,email,
+            INSERT INTO users (national_id,firstname,lastname,othername,email,
             phoneNumber,passportUrl,password,isAdmin,createdDate
-            ) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            ) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """,
-            (self.firstname, self.lastname, self.othername, self.email,
+            (self.national_id, self.firstname, self.lastname, self.othername, self.email,
              self.phoneNumber, self.passportUrl, self.hashed_password, self.isAdmin,
              self.createdDate)
         )
@@ -385,19 +386,33 @@ class User(DatabaseConnection):
             return self.objectify_user_data(user_data)
         return None
 
+    
+    def get_user_by_id(self, user_id):
+        """ get user by user_id."""
+        self.cursor.execute(
+            "SELECT * FROM users WHERE user_id=%s", (user_id, )
+        )
+        user_data = self.cursor.fetchone()
+        self.conn.commit()
+        self.cursor.close()
+        if user_data:
+            return self.objectify_user_data(user_data)
+        return None
+
     def objectify_user_data(self, user_data):
         """convert user data into a dictionary """
-
+        
         self.user_id = user_data[0]
-        self.firstname = user_data[1]
-        self.lastname = user_data[2]
-        self.othername = user_data[3]
-        self.email = user_data[4]
-        self.phoneNumber = user_data[5]
-        self.passportUrl = user_data[6]
-        self.hashed_password = user_data[7]
-        self.isAdmin = user_data[8]
-        self.createdDate = user_data[9]
+        self.national_id =user_data[1]
+        self.firstname = user_data[2]
+        self.lastname = user_data[3]
+        self.othername = user_data[4]
+        self.email = user_data[5]
+        self.phoneNumber = user_data[6]
+        self.passportUrl = user_data[7]
+        self.hashed_password = user_data[8]
+        self.isAdmin = user_data[9]
+        self.createdDate = user_data[10]
         return self
 
 
@@ -463,10 +478,10 @@ class Candidates(DatabaseConnection):
             id=self.id,
 
         )
-    def get_candidate_by_id(self,c_id):
+    def get_candidate_by_id(self,candidate_id):
         """ get candidate by id."""
         self.cursor.execute(
-            "SELECT * FROM candidates WHERE candidate_id=%s", (c_id, )
+            "SELECT * FROM candidates WHERE candidate_id=%s", (candidate_id, )
         )
         data = self.cursor.fetchone()
         self.conn.commit()
@@ -474,6 +489,7 @@ class Candidates(DatabaseConnection):
         if data:
             return self.objectify_candidate_data(data)
         return None
+        
     
     def objectify_candidate_data(self, c_data):
         """convert candidate data into a dictionary """
@@ -484,4 +500,6 @@ class Candidates(DatabaseConnection):
         self.candidate_id = c_data[3]
         self.date_created  = c_data[4]
         return self
+
+
 

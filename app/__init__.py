@@ -12,7 +12,7 @@ from .auth import admin_blueprint as auth_blp
 
 """local module imports."""
 
-from .admin.admin import Party, GetSpecificParty, CreateOffice, GetSpecificOffice, GetPartyByName,GetOfficeByName,BecomeCandidate
+from .admin.admin import Party, GetSpecificParty, CreateOffice, GetSpecificOffice, GetPartyByName,GetOfficeByName,RegisterCandidate
 from .auth.auth import UserSignUp, UserLogin
 
 jwt = JWTManager()
@@ -43,7 +43,7 @@ def create_app(config_name):
     admin.add_resource(CreateOffice, '/offices')
     admin.add_resource(GetSpecificOffice, '/offices/<int:office_id>')
     admin.add_resource(GetOfficeByName, '/offices/<string:name>')
-    admin.add_resource(BecomeCandidate, '/candidates')
+    admin.add_resource(RegisterCandidate, '/office/<int:office_id>/register')
 
     auth.add_resource(UserSignUp, '/signup')
     auth.add_resource(UserLogin, '/signin')

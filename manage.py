@@ -19,7 +19,7 @@ class Tables:
 
     def create_admin(self):
         """creating admin."""
-        user = User("fram", "mwas", "admin", "admin@gmail.com",
+        user = User(32875802, "fram", "mwas", "admin", "admin@gmail.com",
                     1234567, "http://andela.com/imgeas/img1.jpg", "12345", True)
         user.register_user()
 
@@ -29,4 +29,3 @@ if __name__ == '__main__':
         Tables().migrate()
         Tables().create_admin()
         
-
