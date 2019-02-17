@@ -99,5 +99,6 @@ class PoliticalOffice(BaseTest):
         self.assertEqual(response.status_code, 200)
         
         
+        
 
     

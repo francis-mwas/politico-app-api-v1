@@ -9,11 +9,13 @@ from instance.config import app_config
 
 from .admin import admin_blueprint as admn_blp
 from .auth import admin_blueprint as auth_blp
+from .users import user_blueprint as user_blp
 
 """local module imports."""
 
-from .admin.admin import Party, GetSpecificParty, CreateOffice, GetSpecificOffice, GetPartyByName,GetOfficeByName,RegisterCandidate
+from .admin.admin import Party, GetSpecificParty, CreateOffice, GetSpecificOffice, GetPartyByName, GetOfficeByName, RegisterCandidate, GetAllUsers
 from .auth.auth import UserSignUp, UserLogin
+from .users.users import CreateVote, GetVotes,GetAllCandidates
 
 jwt = JWTManager()
 
@@ -34,10 +36,13 @@ def create_app(config_name):
     app.register_blueprint(admn_blp, url_prefix='/api/v2/admin')
     auth = Api(auth_blp)
     app.register_blueprint(auth_blp, url_prefix='/api/v2/auth')
+    user = Api(user_blp)
+    app.register_blueprint(user_blp,url_prefix='/api/v2/users')
+
 
     """creating admin enpoints."""
-
     admin.add_resource(Party, '/parties')
+    admin.add_resource(GetAllUsers, '/users')
     admin.add_resource(GetSpecificParty, '/parties/<int:id>')
     admin.add_resource(GetPartyByName, '/parties/<string:name>')
     admin.add_resource(CreateOffice, '/offices')
@@ -45,8 +50,14 @@ def create_app(config_name):
     admin.add_resource(GetOfficeByName, '/offices/<string:name>')
     admin.add_resource(RegisterCandidate, '/office/<int:office_id>/register')
 
+    """Auth endpoints"""
     auth.add_resource(UserSignUp, '/signup')
-    auth.add_resource(UserLogin, '/signin')
+    auth.add_resource(UserLogin, '/login')
+
+    """user endpoints"""
+    user.add_resource(CreateVote, '/votes')
+    user.add_resource(GetAllCandidates, '/candidates')
+    user.add_resource(GetVotes, '/office/<int:office_id>/<int:candidate_id>/result')
 
     
     @app.errorhandler(400)

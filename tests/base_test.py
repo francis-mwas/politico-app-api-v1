@@ -18,13 +18,14 @@ class BaseTest(unittest.TestCase):
         """testing user sign up."""
 
         user_data = {
+            "national_id": "29805523",
             "firstname": "francis",
             "lastname": "mwangi",
             "othername": "fram",
             "email": "fram@gmail.com",
             "phoneNumber": "0717-445-862",
             "passportUrl": "http://localhost.com/img1.png",
-            "isAdmin": 1,
+            "isAdmin": False,
             "password": "mwas12345"
         }
         response = self.client.post(
@@ -41,7 +42,7 @@ class BaseTest(unittest.TestCase):
             "password": "mwas12345"
         }
         response = self.client.post(
-            "api/v2/auth/signin",
+            "api/v2/auth/login",
             data=json.dumps(login_data),
             headers={"content-type": "application/json"}
         )
@@ -99,7 +100,7 @@ class BaseTest(unittest.TestCase):
         }
 
         response = self.client.post(
-            "api/v2/auth/signin",
+            "api/v2/auth/login",
             data=json.dumps(data),
             headers={"content-type": "application/json"}
         )
@@ -113,5 +114,6 @@ class BaseTest(unittest.TestCase):
         token = json.loads(response.data).get("access_token", None)
 
         return token
+        
         
 

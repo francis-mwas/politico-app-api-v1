@@ -1,4 +1,4 @@
-from app.models.models import Parties, CreatePoliticalOffice, User,Candidates
+from app.models.models import Parties, CreatePoliticalOffice, User, Candidates, Votes
 from run import app
 
 
@@ -9,6 +9,8 @@ class Tables:
         CreatePoliticalOffice().create_office_table()
         User().create_table_users()
         Candidates().create_table_candidates()
+        Votes().create_table_votes()
+
 
     def drop_table(self):
         """function to drop tables."""
@@ -16,6 +18,7 @@ class Tables:
         CreatePoliticalOffice().drop_table_offices()
         User().drop_table_user()
         Candidates().drop_table_candidates()
+        Votes().drop_table_votes()
 
     def create_admin(self):
         """creating admin."""
@@ -28,4 +31,5 @@ if __name__ == '__main__':
         Tables().drop_table()
         Tables().migrate()
         Tables().create_admin()
+        
         

@@ -128,6 +128,7 @@ class PoliticalParties(BaseTest):
   
         self.assertEqual(response.status_code, 200)
         
+        
 
 
     

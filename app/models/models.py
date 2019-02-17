@@ -73,7 +73,7 @@ class Parties(DatabaseConnection):
     def serialize(self):
         """ serialize party data so that we can be able to returnn json."""
         return dict(
-            id= self.id,
+            id=self.id,
             name=self.name,
             hqAddress=self.hqAddress,
             logoUrl=self.logoUrl,
@@ -158,6 +158,7 @@ class CreatePoliticalOffice(DatabaseConnection):
         self.name = name
         self.Type = Type
         self.date_created = datetime.now().replace(microsecond=0, second=0)
+        self.office_id = None
 
     def create_office_table(self):
         """create table offices."""
@@ -227,7 +228,7 @@ class CreatePoliticalOffice(DatabaseConnection):
         office = self.cursor.fetchone()
         self.conn.commit()
         self.cursor.close()
-      
+
         if office:
             return self.Objectify_office(office)
         None
@@ -247,7 +248,7 @@ class CreatePoliticalOffice(DatabaseConnection):
         return None
 
     def delete_office(self, office_id):
-        """delete party by id."""
+        """delete office by id."""
 
         self.cursor.execute(
             "DELETE FROM offices WHERE office_id =%s", (office_id,)
@@ -268,18 +269,18 @@ class CreatePoliticalOffice(DatabaseConnection):
 
     def Objectify_office(self, office_data):
         """convert office data from tuple to an objet"""
-
-        self.office_id = office_data[0]
-        self.name = office_data[1]
-        self.Type = office_data[2]
-        self.date_created = office_data[3]
+        office = CreatePoliticalOffice(
+            name=office_data[1], Type=office_data[2])
+        office.office_id = office_data[0]
+        office.date_created = office_data[3]
+        self = office
         return self
 
 
 class User(DatabaseConnection):
     """ creating class users."""
 
-    def __init__(self, national_id=None,firstname=None, lastname=None, othername=None,
+    def __init__(self, national_id=None, firstname=None, lastname=None, othername=None,
                  email=None, phoneNumber=None, passportUrl=None,
                  password=None, isAdmin=False):
 
@@ -362,18 +363,6 @@ class User(DatabaseConnection):
 
         )
 
-    def fetch_all_users(self):
-        """get all users."""
-
-        self.cursor.execute("SELECT * FROM users")
-        users = self.cursor.fetchall()
-        self.conn.commit()
-        self.cursor.close()
-
-        if users:
-            return [self.objectify_user_data(user) for user in users]
-        return None
-
     def get_user_by_email(self, email):
         """ get user by email."""
         self.cursor.execute(
@@ -386,7 +375,6 @@ class User(DatabaseConnection):
             return self.objectify_user_data(user_data)
         return None
 
-    
     def get_user_by_id(self, user_id):
         """ get user by user_id."""
         self.cursor.execute(
@@ -401,31 +389,44 @@ class User(DatabaseConnection):
 
     def objectify_user_data(self, user_data):
         """convert user data into a dictionary """
-        
-        self.user_id = user_data[0]
-        self.national_id =user_data[1]
-        self.firstname = user_data[2]
-        self.lastname = user_data[3]
-        self.othername = user_data[4]
-        self.email = user_data[5]
-        self.phoneNumber = user_data[6]
-        self.passportUrl = user_data[7]
-        self.hashed_password = user_data[8]
-        self.isAdmin = user_data[9]
-        self.createdDate = user_data[10]
+        user = User(national_id=user_data[1], firstname=user_data[2],
+                    lastname=user_data[3], othername=user_data[4],
+                    email=user_data[5], phoneNumber=user_data[6],
+                    passportUrl=user_data[7], password=user_data[8], isAdmin=user_data[9])
+        user.user_id = user_data[0]
+        user.hashed_password = user_data[8]
+        user.createdDate = user_data[10]
+
+        self = user
+
         return self
+
+
+class GetUsers(User):
+
+    def fetch_all_users(self):
+        """get all users."""
+
+        self.cursor.execute("SELECT * FROM users")
+        users = self.cursor.fetchall()
+        self.conn.commit()
+        self.cursor.close()
+
+        if users:
+            return [self.objectify_user_data(user) for user in users]
+        return None
 
 
 class Candidates(DatabaseConnection):
     """ creating class candidates."""
 
-    def __init__(self,office_id=None, party_id=None, candidate_id=None, date_created=None):
+    def __init__(self, office_id=None, party_id=None, candidate_id=None, date_created=None):
 
         super().__init__()
         self.office_id = office_id
         self.party_id = party_id
         self.candidate_id = candidate_id
-        self.date_created = str(datetime.now().replace(second=0, microsecond=0))
+        self.date_created = datetime.now().replace(second=0, microsecond=0)
         self.id = None
 
     def create_table_candidates(self):
@@ -474,11 +475,12 @@ class Candidates(DatabaseConnection):
             office_id=self.office_id,
             party_id=self.party_id,
             candidate_id=self.candidate_id,
-            date_created=self.date_created,
+            date_created=str(self.date_created),
             id=self.id,
 
         )
-    def get_candidate_by_id(self,candidate_id):
+
+    def get_candidate_by_id(self, candidate_id):
         """ get candidate by id."""
         self.cursor.execute(
             "SELECT * FROM candidates WHERE candidate_id=%s", (candidate_id, )
@@ -489,17 +491,124 @@ class Candidates(DatabaseConnection):
         if data:
             return self.objectify_candidate_data(data)
         return None
-        
-    
+
+    def get_all_candiates(self):
+        """"get all candidate"""
+
+        self.cursor.execute(
+            "SELECT * FROM candidates"
+        )
+
+        candidates = self.cursor.fetchall()
+        self.conn.commit()
+        self.cursor.close()
+
+        if candidates:
+            return [self.objectify_candidate_data(candidate).serialize() for candidate in candidates]
+        return None
+
     def objectify_candidate_data(self, c_data):
         """convert candidate data into a dictionary """
-
-        self.id = c_data[0]
-        self.office_id = c_data[1]
-        self.party_id = c_data[2]
-        self.candidate_id = c_data[3]
-        self.date_created  = c_data[4]
+        candidate = Candidates(
+            office_id=c_data[1], party_id=c_data[2], candidate_id=c_data[3])
+        candidate.id = c_data[0]
+        candidate.date_created = c_data[4]
+        self = candidate
         return self
 
 
+class Votes(DatabaseConnection):
+    """ creating votes """
 
+    def __init__(self, createdBy=None, office_id=None, candidate_id=None, date_created=None):
+
+        super().__init__()
+        self.createdBy = createdBy
+        self.office_id = office_id
+        self.candidate_id = candidate_id
+        self.date_created = str(
+            datetime.now().replace(second=0, microsecond=0))
+
+    def create_table_votes(self):
+        """create table votes """
+
+        self.cursor.execute(
+            """
+            CREATE TABLE votes(
+                id serial PRIMARY KEY,
+                createdBy INTEGER NOT NULL,
+                office_id INTEGER NOT NULL,
+                candidate_id INTEGER NOT NULL,
+                date_created TIMESTAMP
+            )
+            """
+        )
+        self.conn.commit()
+
+    def drop_table_votes(self):
+        """drop table votes if already exist."""
+        self.cursor.execute(
+            """
+                DROP TABLE IF EXISTS votes
+            """
+        )
+        self.conn.commit()
+
+    def add_vote(self):
+        """insert candidates data into a database."""
+
+        self.cursor.execute(
+            """
+            INSERT INTO votes(createdBy,office_id, candidate_id, date_created)
+             VALUES(%s,%s,%s,%s)
+            """,
+            (self.createdBy, self.office_id, self.candidate_id, self.date_created)
+        )
+        self.conn.commit()
+        self.cursor.close()
+
+    def get_already_voted_users(self, createdby):
+        self.cursor.execute(
+            "SELECT * FROM votes WHERE createdby=%s", (createdby,)
+        )
+        voted_users = self.cursor.fetchone()
+        self.conn.commit()
+        self.cursor.close()
+        
+        if voted_users:
+            return [self.objectify_votes_data(voted_user).serialize() for voted_user in voted_users]
+        None
+
+    def get_votes_for_a_specific_candidate(self, office_id, candidate_id):
+
+        self.cursor.execute(
+            "SELECT * FROM votes WHERE office_id=%s AND candidate_id=%s", (
+                office_id, candidate_id)
+        )
+        votes = self.cursor.fetchall()
+        self.conn.commit()
+        self.cursor.close()
+           
+        if votes:
+            return [self.objectify_votes_data(vote).serialize() for vote in votes]
+        return None
+
+    def serialize(self):
+        """ convert vote data into a dictionary."""
+
+        return dict(
+            office_id=self.office_id,
+            candidate_id=self.candidate_id,
+        )
+
+    def objectify_votes_data(self, votes_data):
+        """convert votes into a dictionary """
+
+        self.id = votes_data[0]
+        self.createdBy = votes_data[1]
+        self.office_id = votes_data[2]
+        self.candidate_id = votes_data[3]
+        self.date_created = votes_data[4]
+
+        return self
+        
