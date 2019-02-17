@@ -16,13 +16,14 @@ class PoliticalOffice(BaseTest):
         """testing user sign up."""
 
         user_data = {
+            "national_id": "29805523",
             "firstname": "francis",
             "lastname": "mwangi",
             "othername": "fram",
             "email": "fram@gmail.com",
             "phoneNumber": "0717-445-862",
             "passportUrl": "http://localhost.com/img1.png",
-            "isAdmin": 0,
+            "isAdmin": False,
             "password": "mwas12345"
         }
 
@@ -47,7 +48,7 @@ class PoliticalOffice(BaseTest):
         self.create_account()
 
         response = self.client.post(
-            "api/v2/auth/signin",
+            "api/v2/auth/login",
             data=json.dumps(login_data),
             headers={"content-type": "application/json"}
         )
@@ -59,13 +60,14 @@ class PoliticalOffice(BaseTest):
         """test invalid user email registration."""
 
         user_data = {
+            "national_id": "29805523",
             "firstname": "francis",
             "lastname": "mwangi",
             "othername": "fram",
             "email": "@@#mm@.com",
             "phoneNumber": "0717-445-862",
             "passportUrl": "http://localhost.com/img1.png",
-            "isAdmin": 0,
+            "isAdmin": False,
             "password": "mwas12345"
         }
         response = self.client.post(
@@ -83,13 +85,14 @@ class PoliticalOffice(BaseTest):
         """test invalid firstname."""
 
         user_data = {
+            "national_id": "29805523",
             "firstname": "%43*****mmm",
             "lastname": "mwangi",
             "othername": "fram",
             "email": "fram@gmail.com",
             "phoneNumber": "0717-445-862",
             "passportUrl": "http://localhost.com/img1.png",
-            "isAdmin": 0,
+            "isAdmin": False,
             "password": "mwas12345"
         }
         response = self.client.post(
@@ -107,13 +110,14 @@ class PoliticalOffice(BaseTest):
         """testing invalid lastname."""
 
         user_data = {
+            "national_id": "29805523",
             "firstname": "john",
             "lastname": "88989098",
             "othername": "fram",
             "email": "fram@gmail.com",
             "phoneNumber": "0717-445-862",
             "passportUrl": "http://localhost.com/img1.png",
-            "isAdmin": 0,
+            "isAdmin": False,
             "password": "mwas12345"
         }
         response = self.client.post(
@@ -131,13 +135,14 @@ class PoliticalOffice(BaseTest):
         """testing if othernames are valid."""
 
         user_data = {
+            "national_id": "29805523",
             "firstname": "john",
             "lastname": "lastaname",
             "othername": "^hgf99",
             "email": "fram@gmail.com",
             "phoneNumber": "0717-445-862",
             "passportUrl": "http://localhost.com/img1.png",
-            "isAdmin": 0,
+            "isAdmin": False,
             "password": "mwas12345"
         }
         response = self.client.post(
@@ -155,13 +160,14 @@ class PoliticalOffice(BaseTest):
         """test for invalid phone number."""
 
         user_data = {
+            "national_id": "29805523",
             "firstname": "john",
             "lastname": "lastaname",
             "othername": "othernames",
             "email": "fram@gmail.com",
             "phoneNumber": "kk445-862ll",
             "passportUrl": "http://localhost.com/img1.png",
-            "isAdmin": 0,
+            "isAdmin": False,
             "password": "mwas12345"
         }
         response = self.client.post(
@@ -179,13 +185,14 @@ class PoliticalOffice(BaseTest):
         """test for invalid passport url."""
 
         user_data = {
+            "national_id": "29805523",
             "firstname": "john",
             "lastname": "lastaname",
             "othername": "othernames",
             "email": "fram@gmail.com",
             "phoneNumber": "0717-445-862",
             "passportUrl": "localhost.com/img1.png",
-            "isAdmin": 1,
+            "isAdmin": False,
             "password": "mwas12345"
         }
         response = self.client.post(
@@ -203,13 +210,14 @@ class PoliticalOffice(BaseTest):
         """test for invalid password."""
 
         user_data = {
+            "national_id": "29805523",
             "firstname": "john",
             "lastname": "lastaname",
             "othername": "othernames",
             "email": "fram@gmail.com",
             "phoneNumber": "0717-445-862",
             "passportUrl": "http://localhost.com/img1.png",
-            "isAdmin": 1,
+            "isAdmin": False,
             "password": "q5"
         }
         response = self.client.post(
@@ -222,4 +230,5 @@ class PoliticalOffice(BaseTest):
         self.assertEqual(json.loads(response.data)[
                          "Message"], "Password must "
                          "be between 3 and 10 alphanumeric characters")
+
 

@@ -1,9 +1,8 @@
 """ Global iports."""
-from flask import Flask
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 """local imports."""
-from ..models.models import  Parties, CreatePoliticalOffice,Candidates, User
+from ..models.models import  Parties, CreatePoliticalOffice,Candidates, User,GetUsers
 from .is_admin import admin_access
 
 from validations import validations
@@ -52,8 +51,7 @@ class Party(Resource):
         
         if party:
             return {
-                    "status": 201, "Message": "Party reqistered successfully",
-                    "party": party.serialize()
+                    "status": 201, "Message": "Party reqistered successfully"
             }, 201
         return {"status": "400","Message": "Party not created"}, 400
              
@@ -238,7 +236,7 @@ class GetSpecificOffice(Resource):
     @jwt_required
     @admin_access
     def patch(self, office_id):
-        """ update specif office details."""
+        """ update a specif office details."""
 
         update_office = GetSpecificOffice.parser.parse_args()
         name = update_office['name']
@@ -267,7 +265,6 @@ class GetSpecificOffice(Resource):
 
 class GetOfficeByName(Resource):
     
-   
     def get(self, name):
         """get office by name."""
 
@@ -325,6 +322,24 @@ class RegisterCandidate(Resource):
             "status": 201,
             "Message": "Candidate registered successfully"
         }, 201
+
+
+
+class GetAllUsers(Resource):
+
+    @jwt_required
+    @admin_access
+    def get(self):
+        """fetch all users."""
+    
+        users =GetUsers().fetch_all_users()
+        if users:
+            return {
+                    "status": 200,
+                    "Users": [user.serialize() for user in users]
+            }
+        return {"Message": "There are no users available", "status": 404},404
+
 
 
         

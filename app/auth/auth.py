@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash
 from flask_jwt_extended import create_access_token
 import datetime
 
-from ..models.models import User
+from ..models.models import User,GetUsers
 from validations import validations
 
 class UserSignUp(Resource):
@@ -86,7 +86,7 @@ class UserSignUp(Resource):
     def get(self):
         """get all users."""
 
-        users = User().fetch_all_users()
+        users = GetUsers().fetch_all_users()
         if users:
              return {"status": 200, "users":[user.serialize() for user in users]}, 200
         return {"Message": "No available users", "status": 404},404
