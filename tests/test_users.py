@@ -21,7 +21,7 @@ class PoliticalOffice(BaseTest):
             "lastname": "mwangi",
             "othername": "fram",
             "email": "fram@gmail.com",
-            "phoneNumber": "0717-445-862",
+            "phoneNumber": "0717-449-862",
             "passportUrl": "http://localhost.com/img1.png",
             "isAdmin": False,
             "password": "mwas12345"
@@ -42,7 +42,7 @@ class PoliticalOffice(BaseTest):
         """test non existence user signin."""
 
         login_data = {
-            "email": "john@gmail.com",
+            "email": "m@gmail.com",
             "password": "john12345"
         }
         self.create_account()
@@ -54,7 +54,7 @@ class PoliticalOffice(BaseTest):
         )
         self.assertEqual(response.status_code, 404)
         self.assertEqual(json.loads(response.data)[
-                         "message"], "The user is not found on this server")
+                         "message"], "The user not found, please register")
 
     def test_invalid_email(self):
         """test invalid user email registration."""
@@ -65,7 +65,7 @@ class PoliticalOffice(BaseTest):
             "lastname": "mwangi",
             "othername": "fram",
             "email": "@@#mm@.com",
-            "phoneNumber": "0717-445-862",
+            "phoneNumber": "0717-443-862",
             "passportUrl": "http://localhost.com/img1.png",
             "isAdmin": False,
             "password": "mwas12345"
@@ -90,7 +90,7 @@ class PoliticalOffice(BaseTest):
             "lastname": "mwangi",
             "othername": "fram",
             "email": "fram@gmail.com",
-            "phoneNumber": "0717-445-862",
+            "phoneNumber": "0700-445-862",
             "passportUrl": "http://localhost.com/img1.png",
             "isAdmin": False,
             "password": "mwas12345"
@@ -115,7 +115,7 @@ class PoliticalOffice(BaseTest):
             "lastname": "88989098",
             "othername": "fram",
             "email": "fram@gmail.com",
-            "phoneNumber": "0717-445-862",
+            "phoneNumber": "0711-445-862",
             "passportUrl": "http://localhost.com/img1.png",
             "isAdmin": False,
             "password": "mwas12345"
@@ -140,7 +140,7 @@ class PoliticalOffice(BaseTest):
             "lastname": "lastaname",
             "othername": "^hgf99",
             "email": "fram@gmail.com",
-            "phoneNumber": "0717-445-862",
+            "phoneNumber": "0718-445-862",
             "passportUrl": "http://localhost.com/img1.png",
             "isAdmin": False,
             "password": "mwas12345"
@@ -190,7 +190,7 @@ class PoliticalOffice(BaseTest):
             "lastname": "lastaname",
             "othername": "othernames",
             "email": "fram@gmail.com",
-            "phoneNumber": "0717-445-862",
+            "phoneNumber": "0400-445-862",
             "passportUrl": "localhost.com/img1.png",
             "isAdmin": False,
             "password": "mwas12345"
@@ -215,7 +215,7 @@ class PoliticalOffice(BaseTest):
             "lastname": "lastaname",
             "othername": "othernames",
             "email": "fram@gmail.com",
-            "phoneNumber": "0717-445-862",
+            "phoneNumber": "0317-445-862",
             "passportUrl": "http://localhost.com/img1.png",
             "isAdmin": False,
             "password": "q5"
