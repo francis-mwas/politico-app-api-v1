@@ -32,6 +32,11 @@ class Validations:
 
         return re.match("^[a-zA-Z0-9]{3,10}$",password)
 
+    def validate_national_id(self, national_id):
+        """validate national id"""
+        
+        return re.match("^\d[1-9]\d{8}$", national_id)
+
   
     def validate_url(self, url):
         """ function to validate url."""
