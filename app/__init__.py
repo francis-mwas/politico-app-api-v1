@@ -15,7 +15,7 @@ from .users import user_blueprint as user_blp
 
 from .admin.admin import Party, GetSpecificParty, CreateOffice, GetSpecificOffice, GetPartyByName, GetOfficeByName, RegisterCandidate, GetAllUsers
 from .auth.auth import UserSignUp, UserLogin
-from .users.users import CreateVote, GetVotes,GetAllCandidates
+from .users.users import CreateVote, GetVotes, GetAllCandidates
 
 jwt = JWTManager()
 
@@ -56,8 +56,8 @@ def create_app(config_name):
 
     """user endpoints"""
     user.add_resource(CreateVote, '/votes')
-    user.add_resource(GetAllCandidates, '/candidates')
     user.add_resource(GetVotes, '/office/<int:office_id>/<int:candidate_id>/result')
+    user.add_resource(GetAllCandidates, '/candidates')
 
     
     @app.errorhandler(400)
