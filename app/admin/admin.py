@@ -58,8 +58,7 @@ class Party(Resource):
 
     @jwt_required
     def get(self):
-        """fetch all political parties."""
-
+        """fetch all political parties."""               
         parties = Parties().get_all_parties()
         if parties:
             return{"status":200,"parties":[party.serialize() for party in parties]},200
@@ -123,7 +122,11 @@ class GetSpecificParty(Resource):
         if not validate_data.validate_url(logoUrl):
             return {"status":400, "Message": "Please enter a "
             "valid logo url"}, 400
-     
+
+        party = Parties().get_party_by_name(name)
+        if party:
+            return {"Status":400,"Message":"This party name is already available"},400
+
         if Parties().get_specific_party_by_id(id):
             party = Parties(name, hqAddress, logoUrl)
             party.update_party(id)
@@ -148,9 +151,9 @@ class CreateOffice(Resource):
 
     parser = reqparse.RequestParser(bundle_errors=True)
 
-    parser.add_argument('name', type=str, 
-        required=True, help='Please fill in this field')
     parser.add_argument('Type', type=str, 
+        required=True, help='Please fill in this field')
+    parser.add_argument('name', type=str, 
         required=True, help='Please fill in this field')
     
     @jwt_required
@@ -160,8 +163,8 @@ class CreateOffice(Resource):
 
         office_data = CreateOffice.parser.parse_args()
 
-        name = office_data['name']
         Type = office_data['Type']
+        name = office_data['name']
 
         """validate office data before submiiting."""
         validate_office_data = validations.Validations()
@@ -174,7 +177,7 @@ class CreateOffice(Resource):
             return {"status":400,"Message": 
             "Please enter valid office type"}, 400
 
-        office = CreatePoliticalOffice().get_office_by_type(Type)
+        office = CreatePoliticalOffice().get_office_by_name(name)
         if office:
             return {"Status": 400, "Message": "Office name "
             "already exist"},400
@@ -183,7 +186,8 @@ class CreateOffice(Resource):
         office.create_office()
         return {
             "status": 201,
-            "Message": "Office created successfully"
+            "Message": "Office created successfully",
+            "data": office.serializer()
         }, 201
 
     @jwt_required
@@ -203,9 +207,9 @@ class GetSpecificOffice(Resource):
     """get a specific political office by id."""
 
     parser = reqparse.RequestParser()
-    parser.add_argument('name', type=str, required=True, 
+    parser.add_argument('Type', type=str, required=True, 
     help='Please fill in this field')
-    parser.add_argument('Type', type=str, required=True,
+    parser.add_argument('name', type=str, required=True,
      help='Please fill in this field')
     
     @jwt_required
@@ -239,8 +243,8 @@ class GetSpecificOffice(Resource):
         """ update a specif office details."""
 
         update_office = GetSpecificOffice.parser.parse_args()
-        name = update_office['name']
-        Type = update_office['Type']
+        name = update_office['Type']
+        Type = update_office['name']
         
 
         validate_office_data = validations.Validations()
@@ -268,7 +272,7 @@ class GetOfficeByName(Resource):
     def get(self, name):
         """get office by name."""
 
-        office = CreatePoliticalOffice().get_office_by_type(name)
+        office = CreatePoliticalOffice().get_office_by_name(name)
         if office:
             return {"Office": office.serializer(), "status": 200}
         return {"Message": "This is office does not exist", "status":404},404
@@ -301,10 +305,20 @@ class RegisterCandidate(Resource):
         # if not validate_data.validate_ids(candidate_id):
         #         return {"status":400, "Message": "user id must be a number"}, 400
 
+        party= Candidates().check_if_party_and_office_taken(office_id,party_id)
+        if party:
+            return {
+                "Status":400,
+                "Message": "This office has already been assigened to another candidate under the same party, try another office"
+            },400
+
         user = User().get_user_by_id(candidate_id)
 
         if not user:
             return {"Status": 404, "Message":" user not found"}, 404
+        office = CreatePoliticalOffice().get_office_by_id(office_id)
+        if not office:
+            return {"status": 404, "Message": "Office not found"},404
 
         party = Parties().get_specific_party_by_id(party_id)
 

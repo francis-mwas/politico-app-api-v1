@@ -1,5 +1,5 @@
 from functools import wraps
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity
 from ..models.models import User
 
 def admin_access(fn):
@@ -11,7 +11,5 @@ def admin_access(fn):
             return {'message': 'You must be an admin to acces this endpoint'}, 401
         return fn(*args, **kwargs)
     return wrapper_function
-
-
-
-
+    
+    

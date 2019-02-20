@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+from flask import jsonify
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import create_access_token
 import datetime
@@ -11,7 +12,7 @@ class UserSignUp(Resource):
 
     parser = reqparse.RequestParser(bundle_errors=True)
 
-    parser.add_argument('national_id', type=int, required=True,
+    parser.add_argument('national_id', type=str, required=True,
                         help='This field is required')
     parser.add_argument('firstname', type=str, required=True,
                         help='This field is required')
@@ -67,6 +68,18 @@ class UserSignUp(Resource):
         if not validate_user_data.validate_password(password):
             return {"status": 400, "Message": "Password must "
             "be between 3 and 10 alphanumeric characters"}, 400
+        
+        # if not validate_user_data.validate_national_id(national_id):
+        #     return {"satus":400, "Message":"National id should be digits only and a max of 8 digits"},400
+
+
+        phoneNumber_exists = User().get_user_phone_number(phoneNumber)
+        if phoneNumber_exists:
+            return {"status": 400, "Message": "Phone number already exists"},400
+
+        # national_id = User().get_user_national_id(national_id)
+        # if national_id:
+        #     return {"status": 400, "Message": "National id already exists"},400
 
         user_exist = User().get_user_by_email(email)
         """ check if user already exists."""
@@ -76,12 +89,34 @@ class UserSignUp(Resource):
 
         user = User(national_id,firstname, lastname, othername, email,
                     phoneNumber,passportUrl,password)
-
         user.register_user()
-        return {
-            "status": 201,
-            "Message": "Your account created successfully"
-        }, 201
+        expires = datetime.timedelta(minutes=60)
+        token = create_access_token(identity=user.serialize(), expires_delta=expires)
+
+        # return jsonify({
+           
+        #     "Message": "Your account created successfully",
+        #     "status": 201,
+        #     "data":[{"user":
+        #         user_exist.serialize()
+        #     ,
+        #     "Token":
+        #         token
+        #     }]
+        # })
+        user_exist = User().get_user_by_email(email)
+        return jsonify({
+            
+                "Message": "Account created successfully",
+                "status": 201,
+                "data":[{"user":
+                    user_exist.serialize()
+                ,
+                "Token":
+                    token
+                }]
+            })
+   
    
     def get(self):
         """get all users."""
@@ -124,10 +159,18 @@ class UserLogin(Resource):
                 return {"Message":"Wrong password", "status":400}, 400
             expires = datetime.timedelta(minutes=60)
             token = create_access_token(identity=user_exist.serialize(), expires_delta=expires)
-            return {
-            "access_token": token,
-            "Message": "Welcome you have successfully logged in", 
-            "status": 200}, 200
 
-        return {"status": 404, "message": "The user is not found on this server"},404
+            return jsonify({
+            
+                "Message": "Welcome you have successfully logged in",
+                "status": 201,
+                "data":[{"user":
+                    user_exist.serialize()
+                ,
+                "Token":
+                    token
+                }]
+            })
+   
+        return {"status": 404, "message": "The user not found, please register"},404
 
