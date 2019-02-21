@@ -10,8 +10,7 @@ class PoliticalParties(BaseTest):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.data)[
                          "Message"], "Party reqistered successfully")
-
-
+ 
     def test_invalid_party_name(self):
         """test invalid party name while creating the party."""
 
@@ -31,6 +30,7 @@ class PoliticalParties(BaseTest):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(json.loads(res.data)[
                          "Message"], "Please enter valid name")
+      
  
         
     
@@ -108,6 +108,8 @@ class PoliticalParties(BaseTest):
             "Authorization": f"Bearer {access_token}"}
         )
         self.assertEqual(response.status_code, 404)
+        
+        print(response.data)
 
     def test_edit_party(self):
         """test editing a specific party."""

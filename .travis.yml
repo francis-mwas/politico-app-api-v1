@@ -27,5 +27,7 @@ before_script:
 after_success:
   - coveralls
 
- 
+
     
+env:
+    - SECRET_KEY="wqeretyuiyodfhj21" DATABASE_URL='postgres://cjruocpbcmuivf:714adec5a08ddc9b1401b71c9736b680b2f889df999961e9b2a32d03ad4e26fd@ec2-50-17-193-83.compute-1.amazonaws.com:5432/dc0796g0mvp2ns  
