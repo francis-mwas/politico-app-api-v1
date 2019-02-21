@@ -1,5 +1,5 @@
 web gunicorn run:app
 
-create_db: python manage.python
+create_db: python manage.py
 
 
