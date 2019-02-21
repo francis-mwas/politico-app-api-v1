@@ -368,7 +368,7 @@ class User(DatabaseConnection):
             email=self.email,
             phoneNumber=self.phoneNumber,
             passportUrl=self.passportUrl,
-            password=self.hashed_password,
+            # password=self.hashed_password,
             isAdmin=self.isAdmin,
             createdDate=str(self.createdDate),
             user_id=self.user_id,
