@@ -17,9 +17,9 @@ class Validations:
         return re.match(r'^\d{4}-\d{3}-\d{3}$', phoneNumber)
 
     
-    def validate_ids(self, ids):
+    def validate_ids(self, id):
         """ validate ids """
-        return re.match("^[1-9]{,2}$", ids)        
+        return re.match(r"^[1-9]{,2}$", id)        
     
     def validate_input_fields(self, input_fields):
         """ validate input fields to accept characters only."""
@@ -35,9 +35,10 @@ class Validations:
     def validate_national_id(self, national_id):
         """validate national id"""
         
-        return re.match("^\d[1-9]\d{8}$", national_id)
+        # return re.match("/^[1-9]{1,8}+$/", national_id)
+        return re.match(r"/\(\d{8}\)", national_id)
 
-  
+ 
     def validate_url(self, url):
         """ function to validate url."""
 

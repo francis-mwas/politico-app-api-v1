@@ -4,6 +4,7 @@ from app import create_app
 from manage import Tables
 
 
+
 class BaseTest(unittest.TestCase):
     def setUp(self):
 
@@ -51,12 +52,14 @@ class BaseTest(unittest.TestCase):
 
     def generate_token(self):
         """test tokem generation after successful login."""
-
+       
         self.create_account()
 
         response = self.user_login()
 
-        token = json.loads(response.data).get("access_token", None)
+        token = json.loads(response.data).get('access_token', None)
+      
+        
 
         return token
 
@@ -104,14 +107,15 @@ class BaseTest(unittest.TestCase):
             data=json.dumps(data),
             headers={"content-type": "application/json"}
         )
+       
         return response
 
     def generate_admin_token(self):
         """test tokem generation after successful login."""
 
         response = self.admin_login()
-
-        token = json.loads(response.data).get("access_token", None)
+  
+        token = json.loads(response.data).get('access_token', None)     
 
         return token
         
