@@ -15,8 +15,8 @@ class DatabaseConnection:
         self.username = current_app.config["DB_USERNAME"]
         self.password = current_app.config["DB_PASSWORD"]
 
-        if os.get_env('DATABASE_URL'):
-            self.conn=psycopg2.connect(os.get_env('DATABASE_URL'))
+        if os.getenv('DATABASE_URL'):
+            self.conn=psycopg2.connect(os.getenv('DATABASE_URL'))
         else:
 
             self.conn = psycopg2.connect(
