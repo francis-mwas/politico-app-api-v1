@@ -2,7 +2,9 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 import psycopg2
+import os
 from flask import current_app
+
 
 
 class DatabaseConnection:
@@ -13,12 +15,16 @@ class DatabaseConnection:
         self.username = current_app.config["DB_USERNAME"]
         self.password = current_app.config["DB_PASSWORD"]
 
-        self.conn = psycopg2.connect(
-            host=self.host,
-            database=self.name,
-            password=self.password,
-            user=self.username
-        )
+        if os.get_env('DATABASE_URL'):
+            self.conn=psycopg2.connect(os.get_env('DATABASE_URL'))
+        else:
+
+            self.conn = psycopg2.connect(
+                host=self.host,
+                database=self.name,
+                password=self.password,
+                user=self.username
+            )
         self.cursor = self.conn.cursor()
 
 
