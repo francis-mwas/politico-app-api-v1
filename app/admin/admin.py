@@ -295,15 +295,13 @@ class RegisterCandidate(Resource):
         party_id = data['party_id']
         candidate_id = data['candidate_id']
     
-        # validate_data = validations.Validations()
+        if type(party_id) !=int:
+            return{"status":400, "Message": "party id must be an integer"},400
 
-        # """check to see if the input strings are valid."""
-        # if not validate_data.validate_ids(office_id):
-        #         return {"status":400,"Message": "office id must be a number"}, 400
-        # if not validate_data.validate_ids(party_id):
-        #         return {"status":400,"Message": "party id must be a number"}, 400
-        # if not validate_data.validate_ids(candidate_id):
-        #         return {"status":400, "Message": "user id must be a number"}, 400
+        if type(candidate_id) !=int:
+            return {"status":400, "Message": "candidate id must be an integer"},400
+
+
 
         party= Candidates().check_if_party_and_office_taken(office_id,party_id)
         if party:
