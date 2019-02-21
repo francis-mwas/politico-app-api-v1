@@ -93,7 +93,7 @@ class GetSpecificParty(Resource):
         """ delete a specific party."""
 
         party = Parties().get_specific_party_by_id(id)
-        print(party)
+        
 
         if not party:
             return {"status": 404,"message": "this party does not exist"},404
@@ -140,7 +140,7 @@ class GetPartyByName(Resource):
         """get a party by name."""
 
         party = Parties().get_party_by_name(name)
-        print(party)
+        
         if party:
             return {"Message": party.serialize(), "status": 200},200
         return{"Message": "party name does not exists"},400
@@ -166,6 +166,8 @@ class CreateOffice(Resource):
         Type = office_data['Type']
         name = office_data['name']
 
+        offices = ["federal", "legislative", "state","local government"]   
+        
         """validate office data before submiiting."""
         validate_office_data = validations.Validations()
 
@@ -177,12 +179,18 @@ class CreateOffice(Resource):
             return {"status":400,"Message": 
             "Please enter valid office type"}, 400
 
-        office = CreatePoliticalOffice().get_office_by_name(name)
-        if office:
+        office_exists = CreatePoliticalOffice().get_office_by_name(name)
+
+        if office_exists:
             return {"Status": 400, "Message": "Office name "
             "already exist"},400
 
         office = CreatePoliticalOffice(Type,name)
+
+        if office.Type not in offices:
+            return {"Status": 400, "Message": f"The office type can only be {offices},"
+             "please choose one from the lis",},400
+
         office.create_office()
         return {
             "status": 201,
@@ -294,14 +302,13 @@ class RegisterCandidate(Resource):
         data = RegisterCandidate.parser.parse_args()
         party_id = data['party_id']
         candidate_id = data['candidate_id']
-    
+
+
         if type(party_id) !=int:
             return{"status":400, "Message": "party id must be an integer"},400
 
         if type(candidate_id) !=int:
             return {"status":400, "Message": "candidate id must be an integer"},400
-
-
 
         party= Candidates().check_if_party_and_office_taken(office_id,party_id)
         if party:

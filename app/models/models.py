@@ -291,12 +291,11 @@ class CreatePoliticalOffice(DatabaseConnection):
 class User(DatabaseConnection):
     """ creating class users."""
 
-    def __init__(self, national_id=None, firstname=None, lastname=None, othername=None,
+    def __init__(self,firstname=None, lastname=None, othername=None,
                  email=None, phoneNumber=None, passportUrl=None,
                  password=None, isAdmin=False):
 
         super().__init__()
-        self.national_id = national_id
         self.firstname = firstname
         self.lastname = lastname
         self.othername = othername
@@ -316,7 +315,6 @@ class User(DatabaseConnection):
             """
             CREATE TABLE users(
                 user_id serial PRIMARY KEY,
-                national_id VARCHAR NOT NULL,
                 firstname VARCHAR NOT NULL,
                 lastname VARCHAR NOT NULL,
                 othername VARCHAR NOT NULL,
@@ -346,11 +344,11 @@ class User(DatabaseConnection):
 
         self.cursor.execute(
             """
-            INSERT INTO users (national_id,firstname,lastname,othername,email,
+            INSERT INTO users (firstname,lastname,othername,email,
             phoneNumber,passportUrl,password,isAdmin,createdDate
-            ) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING user_id
+            ) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING user_id
             """,
-            (self.national_id, self.firstname, self.lastname, self.othername, self.email,
+            (self.firstname, self.lastname, self.othername, self.email,
              self.phoneNumber, self.passportUrl, self.hashed_password, self.isAdmin,
              self.createdDate)
         )
@@ -361,7 +359,6 @@ class User(DatabaseConnection):
         """ convert user data into a dictionary."""
 
         return dict(
-            national_id=self.national_id,
             firstname=self.firstname,
             lastname=self.lastname,
             othername=self.othername,
@@ -438,13 +435,13 @@ class User(DatabaseConnection):
     def objectify_user_data(self, user_data):
         """convert user data into a dictionary """
 
-        user = User(national_id=user_data[1], firstname=user_data[2],
-                    lastname=user_data[3], othername=user_data[4],
-                    email=user_data[5], phoneNumber=user_data[6],
-                    passportUrl=user_data[7], password=user_data[8], isAdmin=user_data[9])
+        user = User(firstname=user_data[1],
+                    lastname=user_data[2], othername=user_data[3],
+                    email=user_data[4], phoneNumber=user_data[5],
+                    passportUrl=user_data[6], password=user_data[7], isAdmin=user_data[8])
         user.user_id = user_data[0]
-        user.hashed_password = user_data[8]
-        user.createdDate = user_data[10]
+        user.hashed_password = user_data[7]
+        user.createdDate = user_data[9]
 
         self = user
 
@@ -664,6 +661,23 @@ class Votes(DatabaseConnection):
         self.cursor.execute(
             "SELECT * FROM votes WHERE office_id=%s AND candidate_id=%s", (
                 office_id, candidate_id)
+        )
+        votes = self.cursor.fetchall()
+        self.conn.commit()
+        self.cursor.close()
+
+        if votes:
+            return [self.objectify_votes_data(vote) for vote in votes]
+
+        return None
+
+
+    def get_votes_for_a_specific_office(self, office_id):
+        """get votes for a specific candidate """
+
+        self.cursor.execute(
+            "SELECT COUNT(*) FROM votes WHERE office_id=%s GROUP BY candidate_id", (
+                office_id,)
         )
         votes = self.cursor.fetchall()
         print(votes)

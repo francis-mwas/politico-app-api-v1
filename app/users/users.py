@@ -20,15 +20,11 @@ class CreateVote(Resource):
     def post(self):
         """create post vote method."""
 
-    
-
         votes_data = CreateVote.parser.parse_args()
 
         office_id = votes_data["office_id"]
         candidate_id = votes_data["candidate_id"]
         party_id = votes_data['party_id']
-   
-
         current_user = get_jwt_identity()
 
         candidate = Candidates().get_candidate_by_id(candidate_id)
@@ -86,8 +82,6 @@ class GetVotes(Resource):
 
         votes = Votes().get_votes_for_a_specific_candidate(office_id, candidate_id)
 
-    
-       
         if votes:
             results = len(votes)
             return {
@@ -110,3 +104,15 @@ class GetAllCandidates(Resource):
             return{"status": 200, "candidates": [candidate.serialize() for candidate in candidates]}, 200
         else:
             return {"status": 404, "message": "There are no candidates available at the moment"}, 404
+
+
+class GetOfficeResults(Resource):
+
+    @jwt_required
+    def get(self, office_id):
+        """fetch all office results """
+        votes = Votes().get_votes_for_a_specific_office(office_id)
+
+        return votes
+
+       
