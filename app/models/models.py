@@ -648,7 +648,7 @@ class Votes(DatabaseConnection):
         None
 
     def get_votes_for_a_specific_candidate(self, office_id, candidate_id):
-        """get specific candidate votes """
+        """get votes for a specific candidate """
 
         self.cursor.execute(
             "SELECT * FROM votes WHERE office_id=%s AND candidate_id=%s", (
@@ -664,6 +664,7 @@ class Votes(DatabaseConnection):
             return [self.objectify_votes_data(vote) for vote in votes]
            
         return None
+    
 
     def serialize(self):
         """ convert vote data into a dictionary."""
