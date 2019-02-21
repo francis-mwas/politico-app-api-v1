@@ -1,0 +1,472 @@
+FORMAT: 1A
+HOST: http://127.0.0.1:5000/api
+
+# POLITICO-API-V1
+This is a collection that will hold all the endpoints of the politico-app
+
+## Authentication
+This API uses OAuth v2 Bearer Token / Personal Access Token for its authentication.
+
+# Group Misc
+
+## V2 Users Votes [/v2/users/votes]
+
+### http127.0.0.15000apiv2uservotes [POST]
+This is an enpoint that allows a user to vote for their preffered candidates.
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2uservotesRequest)
+
+
+    + Body
+
+            {
+                "office_id": 3,
+                "candidate_id": 2
+            }
+
+
++ Response 200 
+
+
+
+
+## V1 Admin Parties 2 [/v1/admin/parties/2]
+
+### http127.0.0.15000apiv2adminparties [GET]
+This is an enpoint that creates a political party with name, headquarter address and logo url.
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+### http127.0.0.15000apiv2adminpartiesintid [PATCH]
+This is an endpoint that allows admin to update the details of a  speficic party uniquely identified by its id.
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2adminpartiesRequest)
+
+
+    + Body
+
+            {
+                "name": "ddd",
+                "hqAddress": "Niq",
+                "logoUrl": "http://andela.com/imgeas/img1.jpg"
+            }
+
+
++ Response 200 
+
+
+
+
+## V2 Users Candidates [/v2/users/candidates]
+
+### http127.0.0.15000apiv2usercandidates [GET]
+This is an enpoint that allows users to get all candidates running for various political offices
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+## V2 Admin Office 1 Register [/v2/admin/office/1/register]
+
+### http127.0.0.15000apiv2adminregister [POST]
+This is an enpoint that registers a candidate with office id, party id, and candidate id fields.
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2adminregisterRequest)
+
+
+    + Body
+
+            {
+                "party_id": 1,
+                "user_id": 2
+            }
+
+
++ Response 200 
+
+
+
+
+## V2 Users Office 1 2 Result [/v2/users/office/1/2/result]
+
+### http127.0.0.15000apiv2officeofficeidcandidateidresults [GET]
+This is endpoint allows the user to get the total votes of a specific candidate in a specific office.
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+## V1 Admin Parties [/v1/admin/parties]
+
+### http127.0.0.15000apiv2adminparties [POST]
+This is an enpoint that creates a new political party with name, id, and headquarters fields
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2adminpartiesRequest)
+
+
+    + Body
+
+            {
+                "name": "kanu",
+                "hqAddress": "Niq",
+                "logoUrl": "http://andela.com/imgeas/img1.jpg"
+            }
+
+
++ Response 200 
+
+
+
+### http127.0.0.15000apiv2adminparties1 [GET]
+This endpoint returns a list of all aprties that are availble in the server.
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+## Parties [/parties]
+
+### http127.0.0.15000apiv2adminparties1 [POST]
+This is an enpoint that creates a political party
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2adminpartiesRequest)
+
+
+    + Body
+
+            {
+                "name": "kanu",
+                "hqAddress": "Niq",
+                "logoUrl": "http://andela.com/imgeas/img1.jpg"
+            }
+
+
++ Response 200 
+
+
+
+### http127.0.0.15000apiv2adminparties2 [GET]
+This endpoint returns a list of all political parties that are vailable in the database.
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+## V2 Auth Signup [/v2/auth/signup]
+
+### http127.0.0.15000apiv2authsignup [POST]
+This is an enpoint that allow the users to create an account.
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2authsignupRequest)
+
+
+    + Body
+
+            {
+                "firstname": "francis",
+                "lastname": "mwangi",
+                "othername": "fram",
+                "email": "fram@gmail.com",
+                "phoneNumber": "0717-445-862",
+                "passportUrl": "http://localhost.com/img1.png",
+                "isAdmin": "True",
+                "password": "mwas12345"
+            }
+
+
++ Response 200 
+
+
+
+
+## V2 Auth Login [/v2/auth/login]
+
+### http127.0.0.15000apiv2authlogin [POST]
+This is an enpoint that allow users to sign in to their accounts using email and password.
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2authloginRequest)
+
+
+    + Body
+
+            {
+                "national_id": 767889,
+                "firstname": "mwas",
+                "lastname": "mwangi",
+                "othername": "fram",
+                "email": "admin@gmail.com",
+                "phoneNumber": "0717-445-862",
+                "passportUrl": "http://localhost.com/img1.png",
+                "password": "12345"
+            }
+
+
++ Response 200 
+
+
+
+
+## V1 Admin Offices [/v1/admin/offices]
+
+### http127.0.0.15000apiv2adminoffices [POST]
+This is an enpoint that creates a political office.
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2adminofficesRequest)
+
+
+    + Body
+
+            {
+                "name": "governor",
+                "Type": "Governorship"
+            }
+
+
++ Response 200 
+
+
+
+### http127.0.0.15000apiv2adminoffices [GET]
+This endpoint returns all offices that are available in our database.
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+## V1 Admin Offices 7 [/v1/admin/offices/7]
+
+### http127.0.0.15000apiv2adminofficesint officeid [GET]
+This endpoint returns a specific political office uniquely identified by id
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+## V1 Admin Offices 2 [/v1/admin/offices/2]
+
+### http127.0.0.15000apiv2adminofficesint officeid [DELETE]
+This endpoint deletes a particular office uniquely identified by its id
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2adminofficesRequest)
+
+
+    + Body
+
+            {
+                "name": "governor",
+                "Type": "Governorship"
+            }
+
+
++ Response 200 
+
+
+
+
+## V1 Admin Offices 1 [/v1/admin/offices/1]
+
+### http127.0.0.15000apiv2adminofficesint officeid [PATCH]
+This endpoint updates a particular office uniquely identified by its id
+
++ Request (application/json)
+
+    + Attributes (http127.0.0.15000apiv2adminofficesRequest)
+
+
+    + Body
+
+            {
+                "name": "governorghhhhhg",
+                "Type": "Governorship"
+            }
+
+
++ Response 200 
+
+
+
+
+## V2 Admin Parties 2 [/v2/admin/parties/2]
+
+### http127.0.0.15000apiv2adminpartiesintid [GET]
+This endpoint return a speficic party uniquely identified by a unique party id
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+## V1 Admin Parties Kanu [/v1/admin/parties/kanu]
+
+### http127.0.0.15000apiv2adminpartiesstrname [GET]
+This endpoint return a speficic party uniquely identified by the name.
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+## V1 Admin Offices Kanu [/v1/admin/offices/kanu]
+
+### http127.0.0.15000apiv2adminofficesstrname [GET]
+This endpoint return a speficic office uniquely identified by name.
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+## V1 Auth Signup [/v1/auth/signup]
+
+### http127.0.0.15000apiv2authusers [GET]
+This endpoint returns all the users who have registered with the system.
+
++ Request (application/json)
+
+
+
+
++ Response 200 
+
+
+
+
+
+# Data Structures
+
+## http127.0.0.15000apiv2uservotesRequest (object)
+
+
+### Properties
++ `office_id` (number, required) 
++ `candidate_id` (number, required) 
+
+
+## http127.0.0.15000apiv2adminregisterRequest (object)
+
+
+### Properties
++ `party_id` (number, required) 
++ `user_id` (number, required) 
+
+
+## http127.0.0.15000apiv2adminpartiesRequest (object)
+
+
+### Properties
++ `name` (string, required) 
++ `hqAddress` (string, required) 
++ `logoUrl` (string, required) 
+
+
+## http127.0.0.15000apiv2authsignupRequest (object)
+
+
+### Properties
++ `firstname` (string, required) 
++ `lastname` (string, required) 
++ `othername` (string, required) 
++ `email` (string, required) 
++ `phoneNumber` (string, required) 
++ `passportUrl` (string, required) 
++ `isAdmin` (string, required) 
++ `password` (string, required) 
+
+
+## http127.0.0.15000apiv2authloginRequest (object)
+
+
+### Properties
++ `national_id` (number, required) 
++ `firstname` (string, required) 
++ `lastname` (string, required) 
++ `othername` (string, required) 
++ `email` (string, required) 
++ `phoneNumber` (string, required) 
++ `passportUrl` (string, required) 
++ `password` (string, required) 
+
+
+## http127.0.0.15000apiv2adminofficesRequest (object)
+
+
+### Properties
++ `name` (string, required) 
++ `Type` (string, required) 
+
