@@ -40,6 +40,7 @@ class PoliticalOffice(BaseTest):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(json.loads(response.data)[
                          "Message"], "Please enter valid office name")
+                         
 
     def test_office_creation_with_invalid_type(self):
         """test office creation with invalid type."""
@@ -57,6 +58,7 @@ class PoliticalOffice(BaseTest):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(json.loads(response.data)[
                          "Message"], "Please enter valid office type")
+        print(response.data)
 
     def test_fetching_a_single_office(self):
         """testing fetching a single office by id."""

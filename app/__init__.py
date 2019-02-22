@@ -58,7 +58,7 @@ def create_app(config_name):
     user.add_resource(CreateVote, '/votes')
     user.add_resource(GetVotes, '/office/<int:office_id>/<int:candidate_id>/result')
     user.add_resource(GetAllCandidates, '/candidates')
-    user.add_resource(GetOfficeResults, '/office/<int:office_id>')
+    user.add_resource(GetOfficeResults, '/offices/<int:office_id>')
 
     
     @app.errorhandler(400)

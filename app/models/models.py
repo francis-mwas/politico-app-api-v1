@@ -6,7 +6,6 @@ import os
 from flask import current_app
 
 
-
 class DatabaseConnection:
     def __init__(self):
         self.host = current_app.config["DB_HOST"]
@@ -16,7 +15,7 @@ class DatabaseConnection:
         self.password = current_app.config["DB_PASSWORD"]
 
         if os.getenv('DATABASE_URL'):
-            self.conn=psycopg2.connect(os.getenv('DATABASE_URL'))
+            self.conn = psycopg2.connect(os.getenv('DATABASE_URL'))
         else:
 
             self.conn = psycopg2.connect(
@@ -291,7 +290,7 @@ class CreatePoliticalOffice(DatabaseConnection):
 class User(DatabaseConnection):
     """ creating class users."""
 
-    def __init__(self,firstname=None, lastname=None, othername=None,
+    def __init__(self, firstname=None, lastname=None, othername=None,
                  email=None, phoneNumber=None, passportUrl=None,
                  password=None, isAdmin=False):
 
@@ -671,24 +670,28 @@ class Votes(DatabaseConnection):
 
         return None
 
-
     def get_votes_for_a_specific_office(self, office_id):
-        """get votes for a specific candidate """
+        """get votes for a specific office"""
+
+        votes_data = []
 
         self.cursor.execute(
-            "SELECT COUNT(*) FROM votes WHERE office_id=%s GROUP BY candidate_id", (
-                office_id,)
+            "SELECT candidate_id FROM votes WHERE office_id=%s GROUP BY candidate_id", (
+                office_id, )
         )
-        votes = self.cursor.fetchall()
-        print(votes)
-
-        self.conn.commit()
-        self.cursor.close()
-
-        if votes:
-            return [self.objectify_votes_data(vote) for vote in votes]
-
-        return None
+        
+        candidates_available = self.cursor.fetchall()
+    
+        for candidate in candidates_available:  
+            self.cursor.execute(
+                "SELECT * FROM votes WHERE office_id =%s AND candidate_id=%s", (
+                    office_id, candidate[0])
+            )
+            candidate_votes = len(self.cursor.fetchall())
+      
+            votes_data.append({"Candidate_id": candidate[0], "Votes": candidate_votes})
+            
+        return votes_data
 
     def serialize(self):
         """ convert vote data into a dictionary."""

@@ -12,9 +12,9 @@ class CreateVote(Resource):
     parser.add_argument('office_id', type=int,
                         required=True, help='Please fill in this field and must be an interger')
     parser.add_argument('candidate_id', type=int,
-                        required=True, help='Please fill in this field')
+                        required=True, help='Please fill in this field, must be an integer')
     parser.add_argument('party_id', type=int, required=True,
-                        help='please fill this field')
+                        help='Please fill in this field, must be an integer')
 
     @jwt_required
     def post(self):
@@ -80,8 +80,19 @@ class GetVotes(Resource):
             return {"status": 400, "Message": "candidate id must be an integer"}
         
 
-        votes = Votes().get_votes_for_a_specific_candidate(office_id, candidate_id)
+        office = CreatePoliticalOffice().get_office_by_id(office_id)
 
+        if not office:
+            return{"status": 404, "Message": "Office not found"}, 404
+        
+        candidate = Candidates().get_candidate_by_id(candidate_id)
+        if not candidate:
+            return{"status": 404, "Message": "Candidate not found"}, 404
+
+        
+
+        votes = Votes().get_votes_for_a_specific_candidate(office_id, candidate_id)
+       
         if votes:
             results = len(votes)
             return {
@@ -90,7 +101,7 @@ class GetVotes(Resource):
                 "office_id":office_id
             }
         else:
-            return {"status": 404, "message": "There are no candidates available at the moment"}, 404
+            return {"status": 404, "message": "No candidates available"}, 404
 
 
 class GetAllCandidates(Resource):
@@ -111,8 +122,11 @@ class GetOfficeResults(Resource):
     @jwt_required
     def get(self, office_id):
         """fetch all office results """
+      
         votes = Votes().get_votes_for_a_specific_office(office_id)
 
+
         return votes
+        
 
        
