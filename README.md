@@ -30,6 +30,14 @@ Clone this repository
 
 https://github.com/francis-mwas/politico-app-api-v1
 
+Heroku link
+
+https://politico-app-api-v1.herokuapp.com/
+
+API documentation link
+
+https://politicoapiv2.docs.apiary.io/
+
 
 ### Create and activate virtual environment
 
@@ -48,6 +56,8 @@ https://github.com/francis-mwas/politico-app-api-v1
     $ export FLASK_APP=run.py
 
     $ export MODE=development
+
+    $ python manage.py
 
     $ flask run
 
