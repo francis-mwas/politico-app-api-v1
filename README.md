@@ -128,6 +128,41 @@ https://github.com/francis-mwas/politico-app-api-v1
         <td>Admin /Users</td>
     </tr>
     <tr>
+     <td>POST</td>
+        <td>/api/v2/users/votes  </td>
+        <td>Vote for a candidate</td>
+        <td>Admin /Users</td>
+    </tr>
+    <tr>
+    <tr>
+     <td>GET</td>
+        <td>/api/v2/users/candidates  </td>
+        <td>View candidates</td>
+        <td>Admin /Users</td>
+    </tr>
+    <td>GET</td>
+        <td>/api/v2/users/offices/1 </td>
+        <td>View office results</td>
+        <td>Admin /Users</td>
+    </tr>
+    <tr>
+    <td>GET</td>
+        <td>/api/v2/admin/users </td>
+        <td>View all users</td>
+        <td>Admin</td>
+    </tr>
+     <tr>
+    <td>GET</td>
+        <td>/api/v2/admin/office/1/register </td>
+        <td>Register candidates</td>
+        <td>Admin</td>
+    </tr>
+    <tr>
+    <td>GET</td>
+        <td>/api/v2/users/office/1/3/result</td>
+        <td>View office results for specific office and specific candidate</td>
+        <td>Admin /Users</td>
+    </tr>
      <td>DELETE</td>
         <td>/api/v2/admin/offices/<{id}> </td>
         <td>delete a specific office</td>

@@ -22,7 +22,7 @@ class Tables:
 
     def create_admin(self):
         """creating admin."""
-        user = User(32875802, "fram", "mwas", "admin", "admin@gmail.com",
+        user = User("fram", "mwas", "admin", "admin@gmail.com",
                     1234567, "http://andela.com/imgeas/img1.jpg", "12345", True)
         user.register_user()
 

@@ -230,8 +230,4 @@ class PoliticalOffice(BaseTest):
             headers={"content-type": "application/json"}
         )
         self.assertEqual(response.status_code, 400)
-
-        # self.assertEqual(json.loads(response.data)[
-        #                  "Message"],"Password must be between 3 and 10 alphanumeric characters")
-
-
+        

@@ -3,7 +3,6 @@ from flask import jsonify
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import create_access_token
 import datetime
-
 from ..models.models import User,GetUsers
 from validations import validations
 
@@ -12,8 +11,6 @@ class UserSignUp(Resource):
 
     parser = reqparse.RequestParser(bundle_errors=True)
 
-    parser.add_argument('national_id', type=str, required=True,
-                        help='This field is required')
     parser.add_argument('firstname', type=str, required=True,
                         help='This field is required')
     parser.add_argument('lastname', type=str, required=True,
@@ -34,7 +31,6 @@ class UserSignUp(Resource):
 
         user_data = UserSignUp().parser.parse_args()
 
-        national_id = user_data['national_id']
         firstname = user_data['firstname']
         lastname = user_data['lastname']
         othername = user_data['othername']
@@ -68,8 +64,6 @@ class UserSignUp(Resource):
         if not validate_user_data.validate_password(password):
             return {"status": 400, "Message": "Password must be between"
                      "3 and 10 alphanumeric characters"}, 400
-        # if not validate_user_data.validate_national_id(national_id):
-        #     return {"status":400, "Message":"National id should be digits only"},400
        
         phoneNumber_exists = User().get_user_phone_number(phoneNumber)
         if phoneNumber_exists:
@@ -83,7 +77,7 @@ class UserSignUp(Resource):
         if user_exist:
             return {"status": 400, "Message": "This user already exist"}, 400
 
-        user = User(national_id,firstname, lastname, othername, email,
+        user = User(firstname, lastname, othername, email,
                     phoneNumber,passportUrl,password)
         user.register_user()
         expires = datetime.timedelta(minutes=60)
@@ -91,23 +85,11 @@ class UserSignUp(Resource):
 
         user_exist = User().get_user_by_email(email)
 
-        # return  jsonify({
-            
-        #         "Message": "Account created successfully",
-        #         "status": 201,
-        #         "data":[{"user":
-        #             user_exist.serialize()
-        #         ,
-        #         "Token":
-        #             token
-        #         }]
-        #     })
         return {
             "Message": "Account created successfully",
             "access_token":token,
             "user": user_exist.serialize()
         }
-   
    
     def get(self):
         """get all users."""
@@ -151,17 +133,6 @@ class UserLogin(Resource):
             expires = datetime.timedelta(minutes=60)
             token = create_access_token(identity=user_exist.serialize(), expires_delta=expires)
 
-            # return jsonify({
-            
-            #     "Message": "Welcome you have successfully logged in",
-            #     "status": 201,
-            #     "data":[{"user":
-            #         user_exist.serialize()
-            #     ,
-            #     "Token":
-            #         token
-            #     }]
-            # })
             return {
                     "Message": "Welcome you have successfully logged in",
                     "access_token":token,
